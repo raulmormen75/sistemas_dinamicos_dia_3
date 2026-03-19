@@ -1248,12 +1248,127 @@ function formatNumber(value, digits = 2) {
   return Number.isInteger(rounded) ? String(rounded) : String(rounded);
 }
 
+function SummaryConceptMap({ palette, cards }) {
+  const [priceCard = {}, marketCard = {}, balanceCard = {}] = cards;
+
+  return (
+    <div className="concept-map-card">
+      <div className="concept-map-card__header">
+        <div>
+          <p className="eyebrow" style={{ color: palette.gold }}>
+            Ruta visual
+          </p>
+          <h5>Mapa para leer el modelo</h5>
+        </div>
+        <p>
+          Primero se identifica el precio y sus derivadas. Luego se revisa el exceso de demanda. Al final se ubica el
+          equilibrio y el sentido del ajuste.
+        </p>
+      </div>
+      <svg viewBox="0 0 760 430" className="concept-map" role="img" aria-label="Mapa conceptual de lectura del modelo">
+        <path
+          d="M378 170 C280 170 220 150 162 118"
+          fill="none"
+          stroke={palette.gold}
+          strokeWidth="3"
+          strokeLinecap="round"
+          opacity="0.7"
+        />
+        <path
+          d="M382 170 C476 170 538 150 598 118"
+          fill="none"
+          stroke={palette.accent}
+          strokeWidth="3"
+          strokeLinecap="round"
+          opacity="0.78"
+        />
+        <path
+          d="M380 244 C380 286 380 308 380 332"
+          fill="none"
+          stroke={palette.wine}
+          strokeWidth="3"
+          strokeLinecap="round"
+          opacity="0.68"
+        />
+        <path d="M160 116 l16 -6 l-3 18 Z" fill={palette.gold} opacity="0.86" />
+        <path d="M598 118 l-16 -6 l3 18 Z" fill={palette.accent} opacity="0.9" />
+        <path d="M380 332 l-10 -14 h20 Z" fill={palette.wine} opacity="0.82" />
+
+        <rect x="254" y="128" width="252" height="118" rx="28" fill={palette.surface} stroke={palette.navy} strokeWidth="3.2" />
+        <text x="380" y="164" textAnchor="middle" fontSize="15" fontWeight="700" fill={palette.gold}>
+          Lectura central
+        </text>
+        <text x="380" y="194" textAnchor="middle" fontSize="28" fontWeight="800" fill={palette.graphite}>
+          Precio y ajuste
+        </text>
+        <text x="380" y="219" textAnchor="middle" fontSize="15" fill={palette.textMuted}>
+          p(t), p&apos;(t) y p&apos;&apos;(t)
+        </text>
+
+        <rect x="36" y="42" width="232" height="96" rx="24" fill={palette.surfaceSoft} stroke={palette.gold} strokeWidth="2.4" />
+        <text x="58" y="74" fontSize="13" fontWeight="700" fill={palette.gold}>
+          {priceCard.title ?? 'Precio y variación'}
+        </text>
+        <text x="58" y="102" fontSize="16" fontWeight="700" fill={palette.graphite}>
+          Nivel, velocidad y aceleración
+        </text>
+        <text x="58" y="124" fontSize="14" fill={palette.textMuted}>
+          Lee qué valor tiene el precio y cómo cambia.
+        </text>
+
+        <rect x="492" y="42" width="232" height="96" rx="24" fill={palette.surfaceSoft} stroke={palette.accent} strokeWidth="2.4" />
+        <text x="514" y="74" fontSize="13" fontWeight="700" fill={palette.accent}>
+          {marketCard.title ?? 'Demanda y oferta'}
+        </text>
+        <text x="514" y="102" fontSize="16" fontWeight="700" fill={palette.graphite}>
+          Exceso de demanda
+        </text>
+        <text x="514" y="124" fontSize="14" fill={palette.textMuted}>
+          Si E(p) es positivo, el precio sube; si es negativo, baja.
+        </text>
+
+        <rect x="228" y="334" width="304" height="72" rx="24" fill={palette.surfaceSoft} stroke={palette.wine} strokeWidth="2.4" />
+        <text x="380" y="364" textAnchor="middle" fontSize="13" fontWeight="700" fill={palette.wine}>
+          {balanceCard.title ?? 'Equilibrio y signo'}
+        </text>
+        <text x="380" y="388" textAnchor="middle" fontSize="16" fontWeight="700" fill={palette.graphite}>
+          La condición inicial fija el arranque y el equilibrio fija el destino.
+        </text>
+      </svg>
+      <div className="concept-map-band">
+        <article className="concept-map-band__item">
+          <span>1</span>
+          <div>
+            <strong>Arranque</strong>
+            <p>La condición inicial dice desde dónde comienza la trayectoria.</p>
+          </div>
+        </article>
+        <article className="concept-map-band__item">
+          <span>2</span>
+          <div>
+            <strong>Dirección</strong>
+            <p>El signo del exceso de demanda indica si el precio sube o baja.</p>
+          </div>
+        </article>
+        <article className="concept-map-band__item">
+          <span>3</span>
+          <div>
+            <strong>Destino</strong>
+            <p>El equilibrio marca el nivel hacia el que tiende el sistema.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  );
+}
+
 function SummaryGridVisualizer({ title, summary, props, theme }) {
   const palette = getPalette(theme);
   const cards = props?.cards ?? [];
 
   return (
     <VisualizationShell title={title} summary={summary}>
+      <SummaryConceptMap palette={palette} cards={cards} />
       <div className="summary-grid">
         {cards.map((card) => (
           <article key={card.title} className="summary-card">
@@ -1570,6 +1685,92 @@ function ModelComparisonVisualizer({ title, summary, props, theme }) {
 
   return (
     <VisualizationShell title={title} summary={summary}>
+      <div className="comparison-visual">
+        <article className="comparison-track comparison-track--evans">
+          <div className="comparison-track__head">
+            <p className="eyebrow" style={{ color: palette.gold }}>
+              {left.title}
+            </p>
+            <h5>{left.subtitle}</h5>
+            <p>La respuesta depende del desequilibrio actual y corrige el precio sin memoria adicional.</p>
+          </div>
+          <svg
+            viewBox="0 0 360 180"
+            className="comparison-track__plot"
+            role="img"
+            aria-label="Trayectoria monotónica del modelo de Evans"
+          >
+            <line x1="44" y1="26" x2="44" y2="146" stroke={palette.graphite} strokeWidth="2.4" opacity="0.48" />
+            <line x1="44" y1="146" x2="322" y2="146" stroke={palette.graphite} strokeWidth="2.4" opacity="0.48" />
+            <line x1="44" y1="74" x2="322" y2="74" stroke={palette.gold} strokeWidth="2.2" strokeDasharray="8 8" opacity="0.9" />
+            <path
+              d="M52 132 C92 116 122 102 160 90 C198 80 236 75 316 74"
+              fill="none"
+              stroke={palette.navy}
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+            <circle cx="52" cy="132" r="6" fill={palette.gold} />
+            <circle cx="316" cy="74" r="6" fill={palette.navy} />
+            <text x="20" y="34" fontSize="13" fill={palette.textMuted}>
+              p
+            </text>
+            <text x="309" y="168" fontSize="13" fill={palette.textMuted}>
+              t
+            </text>
+            <text x="248" y="64" fontSize="13" fill={palette.gold}>
+              Equilibrio
+            </text>
+          </svg>
+          <div className="comparison-track__chips">
+            <span className="comparison-chip">Una derivada</span>
+            <span className="comparison-chip">Exceso actual</span>
+            <span className="comparison-chip">Ajuste directo</span>
+          </div>
+        </article>
+        <article className="comparison-track comparison-track--second">
+          <div className="comparison-track__head">
+            <p className="eyebrow" style={{ color: palette.accent }}>
+              {right.title}
+            </p>
+            <h5>{right.subtitle}</h5>
+            <p>La trayectoria toma en cuenta velocidad y aceleración, por eso puede amortiguarse o rebotar.</p>
+          </div>
+          <svg
+            viewBox="0 0 360 180"
+            className="comparison-track__plot"
+            role="img"
+            aria-label="Trayectoria oscilatoria amortiguada del modelo de segundo orden"
+          >
+            <line x1="44" y1="26" x2="44" y2="146" stroke={palette.graphite} strokeWidth="2.4" opacity="0.48" />
+            <line x1="44" y1="146" x2="322" y2="146" stroke={palette.graphite} strokeWidth="2.4" opacity="0.48" />
+            <line x1="44" y1="86" x2="322" y2="86" stroke={palette.accent} strokeWidth="2.2" strokeDasharray="8 8" opacity="0.9" />
+            <path
+              d="M52 134 C84 134 98 60 126 60 C150 60 160 124 188 124 C214 124 224 80 250 80 C270 80 280 98 316 89"
+              fill="none"
+              stroke={palette.wine}
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+            <circle cx="52" cy="134" r="6" fill={palette.wine} />
+            <circle cx="316" cy="89" r="6" fill={palette.accent} />
+            <text x="20" y="34" fontSize="13" fill={palette.textMuted}>
+              p
+            </text>
+            <text x="309" y="168" fontSize="13" fill={palette.textMuted}>
+              t
+            </text>
+            <text x="238" y="76" fontSize="13" fill={palette.accent}>
+              Equilibrio
+            </text>
+          </svg>
+          <div className="comparison-track__chips">
+            <span className="comparison-chip">Dos derivadas</span>
+            <span className="comparison-chip">Memoria del ajuste</span>
+            <span className="comparison-chip">Puede oscilar</span>
+          </div>
+        </article>
+      </div>
       <div className="comparison-grid">
         <article className="comparison-card">
           <p className="eyebrow" style={{ color: palette.gold }}>

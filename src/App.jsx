@@ -22,6 +22,41 @@ function scrollToSection(id) {
 
 function useActiveSection(navItems) {
   const [activeId, setActiveId] = useState(navItems[0]?.id ?? '');
+  const [lockedId, setLockedId] = useState('');
+
+  useEffect(() => {
+    if (!lockedId) {
+      return undefined;
+    }
+
+    const target = document.getElementById(lockedId);
+
+    if (!target) {
+      setLockedId('');
+      return undefined;
+    }
+
+    const releaseLock = () => {
+      const rect = target.getBoundingClientRect();
+      const threshold = Math.max(96, window.innerHeight * 0.24);
+
+      if (rect.top <= threshold) {
+        setActiveId(lockedId);
+        setLockedId('');
+      }
+    };
+
+    releaseLock();
+    const timeoutId = window.setTimeout(() => setLockedId(''), 1400);
+    window.addEventListener('scroll', releaseLock, { passive: true });
+    window.addEventListener('resize', releaseLock);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener('scroll', releaseLock);
+      window.removeEventListener('resize', releaseLock);
+    };
+  }, [lockedId]);
 
   useEffect(() => {
     const elements = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);
@@ -29,6 +64,23 @@ function useActiveSection(navItems) {
     if (elements.length === 0) {
       return undefined;
     }
+
+    const commitActiveId = (nextId) => {
+      if (!nextId) {
+        return;
+      }
+
+      if (lockedId) {
+        if (nextId === lockedId) {
+          setActiveId(nextId);
+          setLockedId('');
+        }
+
+        return;
+      }
+
+      setActiveId(nextId);
+    };
 
     if (typeof IntersectionObserver === 'undefined') {
       const handleScroll = () => {
@@ -42,7 +94,7 @@ function useActiveSection(navItems) {
           }
         }
 
-        setActiveId(nextId);
+        commitActiveId(nextId);
       };
 
       handleScroll();
@@ -72,7 +124,7 @@ function useActiveSection(navItems) {
         }
 
         if (next?.target?.id) {
-          setActiveId(next.target.id);
+          commitActiveId(next.target.id);
         }
       },
       {
@@ -83,9 +135,15 @@ function useActiveSection(navItems) {
 
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
-  }, [navItems]);
+  }, [lockedId, navItems]);
 
-  return [activeId, setActiveId];
+  const navigateToSection = (id) => {
+    setLockedId(id);
+    setActiveId(id);
+    scrollToSection(id);
+  };
+
+  return [activeId, navigateToSection];
 }
 
 function ThemeToggle({ theme, onToggle }) {
@@ -135,7 +193,7 @@ function VisualizationLabel({ children }) {
   );
 }
 
-function BlockRail({ navItems, activeId }) {
+function BlockRail({ navItems, activeId, onNavigate }) {
   return (
     <nav className="block-rail" aria-label="Navegación por secciones">
       {navItems.map((item) => (
@@ -147,7 +205,7 @@ function BlockRail({ navItems, activeId }) {
           data-tooltip={item.title}
           aria-label={item.title}
           aria-pressed={item.id === activeId}
-          onClick={() => scrollToSection(item.id)}
+          onClick={() => onNavigate(item.id)}
         >
           <span className="sr-only">{item.title}</span>
         </button>
@@ -169,7 +227,7 @@ function ScrollTopButton({ visible }) {
   );
 }
 
-function Sidebar({ navItems, activeId }) {
+function Sidebar({ navItems, activeId, onNavigate }) {
   return (
     <>
       <aside className="sidebar" aria-hidden="true" />
@@ -180,7 +238,7 @@ function Sidebar({ navItems, activeId }) {
             type="button"
             className={item.id === activeId ? 'nav-chip is-active' : 'nav-chip'}
             aria-pressed={item.id === activeId}
-            onClick={() => scrollToSection(item.id)}
+            onClick={() => onNavigate(item.id)}
           >
             {item.navLabel}
           </button>
@@ -465,7 +523,7 @@ export default function App() {
     () => [introSection, ...sections, ...exerciseGroups].map(({ id, navLabel, badge, title }) => ({ id, navLabel, badge, title })),
     [],
   );
-  const [activeId] = useActiveSection(navItems);
+  const [activeId, navigateToSection] = useActiveSection(navItems);
   const [theme, setTheme] = useState(getInitialTheme);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -491,9 +549,9 @@ export default function App() {
   return (
     <div className="app-shell">
       <ThemeToggle theme={theme} onToggle={() => setTheme(theme === 'light' ? 'dark' : 'light')} />
-      <BlockRail navItems={navItems} activeId={activeId} />
+      <BlockRail navItems={navItems} activeId={activeId} onNavigate={navigateToSection} />
       <ScrollTopButton visible={showScrollTop} />
-      <Sidebar navItems={navItems} activeId={activeId} />
+      <Sidebar navItems={navItems} activeId={activeId} onNavigate={navigateToSection} />
       <main className="main-content">
         <IntroSection />
         {sections.map((section) => (
