@@ -272,9 +272,6 @@ function StepNavigator({ steps }) {
 }
 
 function ExampleCard({ example, onOpenVisual }) {
-  const [showSolution, setShowSolution] = useState(false);
-  const [showErrors, setShowErrors] = useState(false);
-
   return (
     <article className="surface-card surface-card--example">
       <div className="section-card__header">
@@ -283,12 +280,6 @@ function ExampleCard({ example, onOpenVisual }) {
           <h3>{example.title}</h3>
         </div>
         <div className="card-actions">
-          <button type="button" className="secondary-button" onClick={() => setShowSolution(!showSolution)}>
-            {showSolution ? 'Ocultar pasos' : 'Ver pasos'}
-          </button>
-          <button type="button" className="secondary-button" onClick={() => setShowErrors(!showErrors)}>
-            {showErrors ? 'Ocultar errores' : 'Ver errores'}
-          </button>
           <button type="button" className="secondary-button" onClick={onOpenVisual}>
             <VisualizationLabel>Abrir visualización</VisualizationLabel>
           </button>
@@ -304,7 +295,10 @@ function ExampleCard({ example, onOpenVisual }) {
           <MathMarkdown content={example.ask} className="rich-text rich-text--compact" />
         </div>
       </div>
-      {showSolution ? <StepNavigator steps={example.steps} /> : null}
+      <div className="solution-block">
+        <p className="prompt-label">Desarrollo paso a paso</p>
+        <StepNavigator steps={example.steps} />
+      </div>
       <div className="result-grid">
         <div className="result-card">
           <p className="prompt-label">Resultado</p>
@@ -315,18 +309,16 @@ function ExampleCard({ example, onOpenVisual }) {
           <MathMarkdown content={example.interpretation} className="rich-text" />
         </div>
       </div>
-      {showErrors ? (
-        <div className="error-box">
-          <p className="error-box__title">Errores a evitar</p>
-          <ul className="plain-list">
-            {example.errors.map((item) => (
-              <li key={item}>
-                <MathMarkdown content={item} className="rich-text rich-text--compact" />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      <div className="error-box">
+        <p className="error-box__title">Errores a evitar</p>
+        <ul className="plain-list">
+          {example.errors.map((item) => (
+            <li key={item}>
+              <MathMarkdown content={item} className="rich-text rich-text--compact" />
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className="mini-note mini-note--soft">
         <strong>Visualización sugerida.</strong>{' '}
         <MathMarkdown content={example.visualPrompt} className="rich-text rich-text--compact" />
@@ -387,8 +379,6 @@ function LessonSection({ section, theme }) {
 }
 
 function ExerciseCard({ exercise, theme }) {
-  const [showSolution, setShowSolution] = useState(false);
-  const [showErrors, setShowErrors] = useState(false);
   const [showVisual, setShowVisual] = useState(false);
 
   return (
@@ -401,14 +391,8 @@ function ExerciseCard({ exercise, theme }) {
           <h3>{exercise.title}</h3>
         </div>
         <div className="card-actions">
-          <button type="button" className="secondary-button" onClick={() => setShowSolution(!showSolution)}>
-            {showSolution ? 'Ocultar pasos' : 'Ver pasos'}
-          </button>
-          <button type="button" className="secondary-button" onClick={() => setShowErrors(!showErrors)}>
-            {showErrors ? 'Ocultar errores' : 'Ver errores'}
-          </button>
           <button type="button" className="secondary-button" onClick={() => setShowVisual(!showVisual)}>
-            <VisualizationLabel>{showVisual ? 'Ocultar visualización' : 'Abrir visualización'}</VisualizationLabel>
+            <VisualizationLabel>Abrir visualización</VisualizationLabel>
           </button>
         </div>
       </div>
@@ -422,7 +406,10 @@ function ExerciseCard({ exercise, theme }) {
           <MathMarkdown content={exercise.ask} className="rich-text rich-text--compact" />
         </div>
       </div>
-      {showSolution ? <StepNavigator steps={exercise.steps} /> : null}
+      <div className="solution-block">
+        <p className="prompt-label">Desarrollo paso a paso</p>
+        <StepNavigator steps={exercise.steps} />
+      </div>
       <div className="result-grid">
         <div className="result-card">
           <p className="prompt-label">Resultado</p>
@@ -433,18 +420,16 @@ function ExerciseCard({ exercise, theme }) {
           <MathMarkdown content={exercise.interpretation} className="rich-text" />
         </div>
       </div>
-      {showErrors ? (
-        <div className="error-box">
-          <p className="error-box__title">Errores a evitar</p>
-          <ul className="plain-list">
-            {exercise.errors.map((item) => (
-              <li key={item}>
-                <MathMarkdown content={item} className="rich-text rich-text--compact" />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      <div className="error-box">
+        <p className="error-box__title">Errores a evitar</p>
+        <ul className="plain-list">
+          {exercise.errors.map((item) => (
+            <li key={item}>
+              <MathMarkdown content={item} className="rich-text rich-text--compact" />
+            </li>
+          ))}
+        </ul>
+      </div>
       <div className="mini-note mini-note--soft">
         <strong>Visualización sugerida.</strong>{' '}
         <MathMarkdown content={exercise.visualHint} className="rich-text rich-text--compact" />

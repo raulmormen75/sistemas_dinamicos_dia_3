@@ -4,7 +4,7 @@ const md = (strings, ...values) =>
 export const courseMeta = {
   title: 'Lección de Evans y precio de segundo orden',
   subtitle: 'Ajuste de precios, equilibrio y estabilidad con ecuaciones diferenciales',
-  footerText: 'Material de clase · Prof. Morales Mendoza Raúl',
+  footerText: 'Material de clase · Prof. Morales Mendoza Raul',
 };
 
 export const introSection = {
