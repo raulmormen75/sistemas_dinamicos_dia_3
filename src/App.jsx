@@ -229,27 +229,44 @@ function StepNavigator({ steps }) {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="step-block">
-      <div className="step-pills">
-        {steps.map((_, index) => (
-          <button
-            key={`step-${index + 1}`}
-            type="button"
-            className={index === activeStep ? 'step-pill is-active' : 'step-pill'}
-            onClick={() => setActiveStep(index)}
-          >
-            Paso {index + 1}
-          </button>
-        ))}
-      </div>
-      <div className="step-list">
-        {steps.map((step, index) => (
-          <div key={`step-line-${index + 1}`} className={index === activeStep ? 'step-card is-active' : 'step-card'}>
-            <span className="step-card__number">{index + 1}</span>
-            <MathMarkdown content={step} className="rich-text" />
-          </div>
-        ))}
-      </div>
+    <div className="step-accordion" role="list" aria-label="Desarrollo paso a paso">
+      {steps.map((step, index) => {
+        const isOpen = index === activeStep;
+        const panelId = `step-panel-${index + 1}`;
+        const triggerId = `step-trigger-${index + 1}`;
+
+        return (
+          <article key={`step-item-${index + 1}`} className={isOpen ? 'step-item is-open' : 'step-item'} role="listitem">
+            <h4 className="step-item__heading">
+              <button
+                id={triggerId}
+                type="button"
+                className="step-item__trigger"
+                onClick={() => setActiveStep(isOpen ? -1 : index)}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+              >
+                <span className="step-item__label">
+                  <span className="step-card__number">{index + 1}</span>
+                  <span className="step-item__title">Paso {index + 1}</span>
+                </span>
+                <span className={isOpen ? 'step-item__chevron is-open' : 'step-item__chevron'} aria-hidden="true">
+                  ▾
+                </span>
+              </button>
+            </h4>
+            <div
+              id={panelId}
+              className={isOpen ? 'step-item__content is-open' : 'step-item__content'}
+              role="region"
+              aria-labelledby={triggerId}
+              hidden={!isOpen}
+            >
+              <MathMarkdown content={step} className="rich-text" />
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

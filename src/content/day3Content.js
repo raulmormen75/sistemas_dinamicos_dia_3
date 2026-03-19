@@ -105,15 +105,17 @@ interpreta qué dice cada dato.
 `,
       ask: 'Identificar el punto de arranque y la dirección inicial del precio.',
       steps: [
-        md`$$p(0)=4$$ significa que el precio inicia en $4$.`,
-        md`$$p'(0)=1$$ significa que, al inicio, el precio sube.`,
-        md`El equilibrio no se obtiene de los datos iniciales, sino del modelo.`,
+        md`Primer dato: $$p(0)=4$$. Este valor fija el punto inicial de la trayectoria en el plano $(t,p)$.`,
+        md`Si en cualquier solución de precio sustituimos $$t=0$$, el resultado debe ser 4 para cumplir la condición inicial.`,
+        md`Segundo dato: $$p'(0)=1$$. Como la derivada es positiva, la curva inicia con pendiente ascendente.`,
+        md`De forma local, eso implica que para valores pequeños de $$t>0$$ se espera $$p(t)>4$$.`,
+        md`Estos datos no determinan el equilibrio. El equilibrio $$p^*$$ se obtiene de la ecuación del modelo, no de la condición inicial.`,
       ],
       result: md`
 El precio arranca en $4$ y comienza con tendencia ascendente.
 `,
       interpretation: md`
-Las condiciones iniciales solo fijan el punto de partida. El destino de largo plazo depende de la ecuación diferencial.
+Las condiciones iniciales responden desde dónde y en qué dirección arranca el precio. El nivel al que converge depende de la estructura de la ecuación diferencial.
 `,
       errors: [
         'Confundir condición inicial con equilibrio.',
@@ -239,12 +241,43 @@ $$
 `,
       ask: 'Encontrar la trayectoria del precio y el precio de equilibrio.',
       steps: [
-        md`$$p'(t)=2\big[(14-2p)-(-4+p)\big]$$`,
-        md`$$p'(t)=2(18-3p)$$`,
-        md`$$p'(t)=36-6p$$`,
-        md`$$p'(t)+6p=36$$`,
-        md`La solución general es $$p(t)=Ce^{-6t}+6$$`,
-        md`Con $$p(0)=4$$ se obtiene $$C=-2$$`,
+        md`Sustitución directa:
+$$
+p'(t)=2\big[(14-2p)-(-4+p)\big]
+$$`,
+        md`Limpieza de signos en el corchete:
+$$
+(14-2p)-(-4+p)=14-2p+4-p=18-3p
+$$`,
+        md`Aplicación del factor de ajuste:
+$$
+p'(t)=2(18-3p)=36-6p
+$$`,
+        md`Reacomodo en forma lineal:
+$$
+p'(t)+6p=36
+$$`,
+        md`Homogénea asociada:
+$$
+p'_h+6p_h=0 \Rightarrow p_h(t)=Ce^{-6t}
+$$`,
+        md`Particular constante: proponemos $$p_p(t)=A$$.
+Al sustituir:
+$$
+0+6A=36 \Rightarrow A=6
+$$`,
+        md`Solución general:
+$$
+p(t)=p_h(t)+p_p(t)=Ce^{-6t}+6
+$$`,
+        md`Condición inicial:
+$$
+p(0)=4 \Rightarrow 4=C+6 \Rightarrow C=-2
+$$`,
+        md`Trayectoria final:
+$$
+p(t)=6-2e^{-6t}
+$$`,
       ],
       result: md`
 $$
@@ -252,7 +285,7 @@ p(t)=6-2e^{-6t}
 $$
 `,
       interpretation: md`
-El precio inicia en $4$, que está por debajo del equilibrio, por eso sube rápido hasta acercarse a $6$.
+El precio arranca en 4, por debajo del equilibrio. Por eso la curva sube con rapidez al inicio y después se aplana hasta converger de manera estable a 6.
 `,
       errors: [
         'Cambiar mal los signos dentro de $D(p)-S(p)$.',
@@ -260,10 +293,10 @@ El precio inicia en $4$, que está por debajo del equilibrio, por eso sube rápi
         'Confundir el valor inicial con el equilibrio.',
         'No usar la condición inicial para fijar $C$.',
       ],
-      visualPrompt: 'La curva arranca en 4, sube rápido y se aplana hacia 6.',
+      visualPrompt: 'La gráfica debe mostrar inicio en 4, pendiente positiva alta al principio y convergencia monótona hacia la recta de equilibrio p=6.',
     },
     recap: md`
-Cuando el precio inicia por debajo del equilibrio, el modelo lo empuja hacia arriba hasta estabilizarlo.
+En Evans se ve toda la cadena matemática: sustitución, simplificación, homogénea, particular y condición inicial. Esa secuencia explica por qué la curva termina en el equilibrio que muestra la visualización.
 `,
     visual: {
       type: 'linearAutonomous',
@@ -349,12 +382,60 @@ $$
 `,
       ask: 'Encontrar la trayectoria del precio y el equilibrio.',
       steps: [
-        md`En equilibrio: $$6p=24\Rightarrow p^*=4$$`,
-        md`La homogénea es $$p''+5p'+6p=0$$`,
-        md`$$r^2+5r+6=(r+2)(r+3)=0$$`,
-        md`$$p_h(t)=c_1e^{-2t}+c_2e^{-3t}$$`,
-        md`Una particular constante es $$p_p(t)=4$$`,
-        md`Con las condiciones iniciales se obtiene $$c_1=-9$$ y $$c_2=6$$`,
+        md`Equilibrio del sistema: en estado estacionario $$p''=0$$ y $$p'=0$$.
+Entonces:
+$$
+6p=24 \Rightarrow p^*=4
+$$`,
+        md`Parte homogénea:
+$$
+p''+5p'+6p=0
+$$
+con polinomio característico
+$$
+r^2+5r+6=0
+$$`,
+        md`Factorización:
+$$
+r^2+5r+6=(r+2)(r+3)=0
+$$
+por lo tanto $$r_1=-2$$ y $$r_2=-3$$.`,
+        md`Solución homogénea:
+$$
+p_h(t)=c_1e^{-2t}+c_2e^{-3t}
+$$`,
+        md`Particular constante: si $$p_p(t)=A$$, al sustituir en la ecuación completa:
+$$
+0+0+6A=24 \Rightarrow A=4
+$$`,
+        md`Solución general:
+$$
+p(t)=c_1e^{-2t}+c_2e^{-3t}+4
+$$`,
+        md`Con $$p(0)=1$$:
+$$
+c_1+c_2+4=1 \Rightarrow c_1+c_2=-3
+$$`,
+        md`Derivada para usar $$p'(0)=0$$:
+$$
+p'(t)=-2c_1e^{-2t}-3c_2e^{-3t}
+$$
+Luego:
+$$
+-2c_1-3c_2=0
+$$`,
+        md`Sistema lineal:
+$$
+\begin{cases}
+c_1+c_2=-3\\
+-2c_1-3c_2=0
+\end{cases}
+$$
+De aquí se obtiene $$c_2=6$$ y $$c_1=-9$$.`,
+        md`Trayectoria final:
+$$
+p(t)=4-9e^{-2t}+6e^{-3t}
+$$`,
       ],
       result: md`
 $$
@@ -362,7 +443,7 @@ p(t)=4-9e^{-2t}+6e^{-3t}
 $$
 `,
       interpretation: md`
-El precio empieza en $1$, debajo del equilibrio, y sube hacia $4$ sin oscilar.
+El precio parte en 1 y se aproxima a 4 sin oscilaciones porque la homogénea tiene dos raíces reales negativas. La gráfica confirma un ajuste estable y amortiguado.
 `,
       errors: [
         'Olvidar que el equilibrio se obtiene al anular $p\'$ y $p\'\'.$',
@@ -370,10 +451,10 @@ El precio empieza en $1$, debajo del equilibrio, y sube hacia $4$ sin oscilar.
         'Perder una de las condiciones iniciales.',
         'No revisar el signo de la solución particular.',
       ],
-      visualPrompt: 'La trayectoria sube hacia 4 sin cruzarlo y el plano de fase se cierra hacia el equilibrio.',
+      visualPrompt: 'La visualización debe reflejar convergencia estable a p=4, ascenso desde p(0)=1 y ausencia de rebotes persistentes en el plano de fase.',
     },
     recap: md`
-Cuando aparece $p''(t)$, el precio puede tardar más en acomodarse y, si las raíces son complejas, puede rebotar alrededor del equilibrio.
+Con segundo orden se separan equilibrio, homogénea y particular, y después se fijan constantes con dos condiciones iniciales. Esa ruta matemática permite explicar con precisión la forma de la curva.
 `,
     visual: {
       type: 'secondOrderPrice',
@@ -446,15 +527,24 @@ $$
 `,
       ask: 'Identificar qué pregunta responde cada modelo.',
       steps: [
-        md`Evans responde al desequilibrio actual del mercado.`,
-        md`El segundo orden responde además por la velocidad y la aceleración del ajuste.`,
-        md`Si el precio rebota antes de estabilizarse, el segundo orden describe mejor el proceso.`,
+        md`En Evans:
+$$
+p'(t)=k(D-S)
+$$
+la ecuación usa solo primera derivada. El signo de $$D-S$$ determina de inmediato si el precio sube o baja.`,
+        md`En segundo orden:
+$$
+p''(t)+ap'(t)+bp(t)=c
+$$
+se añade aceleración, de modo que la trayectoria depende no solo del desequilibrio actual, sino también de la inercia del ajuste.`,
+        md`Si la serie de precios muestra rebotes alrededor de un nivel de equilibrio, Evans suele quedarse corto porque no modela esa memoria dinámica.`,
+        md`Si el ajuste es directo y sin rebotes, Evans es más simple y suele ser suficiente para interpretación básica.`,
       ],
       result: md`
 Evans es más directo. El segundo orden incorpora inercia y puede producir oscilaciones amortiguadas.
 `,
       interpretation: md`
-La elección del modelo depende de la historia del mercado y del tipo de ajuste que se quiera describir.
+La elección correcta del modelo debe apoyarse en la forma observada de la gráfica: convergencia directa sugiere Evans; ajuste con rebotes o amortiguamiento sugiere segundo orden.
 `,
       errors: [
         'Tratar los dos modelos como si dijeran exactamente lo mismo.',
@@ -549,13 +639,42 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y el precio de equilibrio.',
         steps: [
-          md`$$p'(t)=2\big[(14-2p)-(-4+p)\big]$$`,
-          md`$$p'(t)=2(18-3p)$$`,
-          md`$$p'(t)=36-6p$$`,
-          md`$$p'(t)+6p=36$$`,
-          md`$$p_h(t)=Ce^{-6t}$$`,
-          md`$$p_p(t)=6$$`,
-          md`Con $$p(0)=4$$ se obtiene $$C=-2$$.`,
+          md`Sustitución:
+$$
+p'(t)=2\big[(14-2p)-(-4+p)\big]
+$$`,
+          md`Simplificación del corchete:
+$$
+(14-2p)-(-4+p)=14-2p+4-p=18-3p
+$$`,
+          md`Aplicación del factor de ajuste:
+$$
+p'(t)=2(18-3p)=36-6p
+$$`,
+          md`Reacomodo en forma lineal:
+$$
+p'(t)+6p=36
+$$`,
+          md`Ecuación homogénea:
+$$
+p'_h+6p_h=0 \Rightarrow p_h(t)=Ce^{-6t}
+$$`,
+          md`Particular constante:
+$$
+p_p(t)=A,\;6A=36\Rightarrow A=6
+$$`,
+          md`Solución general:
+$$
+p(t)=Ce^{-6t}+6
+$$`,
+          md`Condición inicial:
+$$
+p(0)=4\Rightarrow 4=C+6\Rightarrow C=-2
+$$`,
+          md`Resultado:
+$$
+p(t)=6-2e^{-6t},\qquad p^*=6
+$$`,
         ],
         result: md`
 $$
@@ -563,14 +682,14 @@ p(t)=6-2e^{-6t}
 $$
 `,
         interpretation: md`
-El precio arranca en $4$, sube rápido y se estabiliza en $6$.
+El precio arranca en 4 y, al estar por debajo del equilibrio, la trayectoria sube con rapidez al inicio. Después la pendiente se reduce y la curva converge de forma estable hacia 6.
 `,
         errors: [
           'Olvidar cambiar el signo de la oferta.',
           'Perder el factor 2.',
           'Confundir el equilibrio con el valor inicial.',
         ],
-        visualHint: 'La curva parte en 4, se eleva con rapidez y se pega a la recta de equilibrio $p=6$.',
+        visualHint: 'La gráfica debe mostrar un ascenso monótono desde 4 y una aproximación asintótica a la recta de equilibrio p=6.',
         visual: {
           type: 'linearAutonomous',
           title: 'Trayectoria del ejemplo del profesor',
@@ -610,13 +729,42 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y el precio de equilibrio.',
         steps: [
-          md`$$p'(t)=3\big[(20-p)-(2+p)\big]$$`,
-          md`$$p'(t)=3(18-2p)$$`,
-          md`$$p'(t)=54-6p$$`,
-          md`$$p'(t)+6p=54$$`,
-          md`$$p_h(t)=Ce^{-6t}$$`,
-          md`$$p_p(t)=9$$`,
-          md`Con $$p(0)=12$$ se obtiene $$C=3$$.`,
+          md`Sustitución:
+$$
+p'(t)=3\big[(20-p)-(2+p)\big]
+$$`,
+          md`Simplificación del exceso de demanda:
+$$
+(20-p)-(2+p)=20-p-2-p=18-2p
+$$`,
+          md`Multiplicación por 3:
+$$
+p'(t)=3(18-2p)=54-6p
+$$`,
+          md`Reacomodo:
+$$
+p'(t)+6p=54
+$$`,
+          md`Homogénea:
+$$
+p'_h+6p_h=0\Rightarrow p_h(t)=Ce^{-6t}
+$$`,
+          md`Particular:
+$$
+p_p(t)=A,\;6A=54\Rightarrow A=9
+$$`,
+          md`General:
+$$
+p(t)=Ce^{-6t}+9
+$$`,
+          md`Condición inicial:
+$$
+p(0)=12\Rightarrow 12=C+9\Rightarrow C=3
+$$`,
+          md`Resultado:
+$$
+p(t)=9+3e^{-6t},\qquad p^*=9
+$$`,
         ],
         result: md`
 $$
@@ -624,14 +772,14 @@ p(t)=9+3e^{-6t}
 $$
 `,
         interpretation: md`
-El precio inicia arriba del equilibrio y desciende hacia $9$.
+El precio comienza en 12, por encima de 9. Por eso la trayectoria desciende de manera estable y se acerca al equilibrio sin oscilaciones.
 `,
         errors: [
           'Restar mal demanda y oferta.',
           'Olvidar el factor 3.',
           'No usar la condición inicial para fijar la constante.',
         ],
-        visualHint: 'La trayectoria comienza en 12 y baja de forma suave hasta acercarse a 9.',
+        visualHint: 'La visualización debe mostrar descenso monótono desde 12 y convergencia gradual a la línea horizontal p=9.',
         visual: {
           type: 'linearAutonomous',
           title: 'Descenso del precio hacia el equilibrio',
@@ -671,12 +819,38 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y el equilibrio.',
         steps: [
-          md`$$p'(t)=(30-2p)-(6+p)$$`,
-          md`$$p'(t)=24-3p$$`,
-          md`$$p'(t)+3p=24$$`,
-          md`$$p_h(t)=Ce^{-3t}$$`,
-          md`$$p_p(t)=8$$`,
-          md`Con $$p(0)=2$$ se obtiene $$C=-6$$.`,
+          md`Sustitución:
+$$
+p'(t)=(30-2p)-(6+p)
+$$`,
+          md`Simplificación:
+$$
+30-2p-6-p=24-3p
+$$`,
+          md`Forma lineal:
+$$
+p'(t)+3p=24
+$$`,
+          md`Homogénea:
+$$
+p'_h+3p_h=0\Rightarrow p_h(t)=Ce^{-3t}
+$$`,
+          md`Particular:
+$$
+p_p(t)=A,\;3A=24\Rightarrow A=8
+$$`,
+          md`Solución general:
+$$
+p(t)=Ce^{-3t}+8
+$$`,
+          md`Condición inicial:
+$$
+p(0)=2\Rightarrow 2=C+8\Rightarrow C=-6
+$$`,
+          md`Resultado:
+$$
+p(t)=8-6e^{-3t},\qquad p^*=8
+$$`,
         ],
         result: md`
 $$
@@ -684,14 +858,14 @@ p(t)=8-6e^{-3t}
 $$
 `,
         interpretation: md`
-El precio inicia por debajo del equilibrio y sube hasta aproximarse a $8$.
+El precio arranca en 2 y está por debajo del equilibrio. Por eso la trayectoria sube de forma estable hasta acercarse a 8.
 `,
         errors: [
           'Sacar mal el exceso de demanda.',
           'Olvidar que aquí no hay factor 3 adicional.',
           'Cambiar el signo de la constante al aplicar la condición inicial.',
         ],
-        visualHint: 'La curva parte en 2, sube y se pega a la recta de equilibrio $p=8$.',
+        visualHint: 'La curva debe iniciar en 2, mostrar pendiente positiva y aproximarse de manera asintótica a p=8.',
         visual: {
           type: 'linearAutonomous',
           title: 'Subida del precio hacia el equilibrio',
@@ -725,12 +899,54 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y el equilibrio.',
         steps: [
-          md`Equilibrio: $$6p=24\Rightarrow p^*=4$$`,
-          md`$$p''+5p'+6p=0$$`,
-          md`$$r^2+5r+6=(r+2)(r+3)=0$$`,
-          md`$$p_h(t)=c_1e^{-2t}+c_2e^{-3t}$$`,
-          md`$$p_p(t)=4$$`,
-          md`Con las condiciones iniciales se obtiene $$c_1=-9$$ y $$c_2=6$$.`,
+          md`Equilibrio:
+$$
+6p=24\Rightarrow p^*=4
+$$`,
+          md`Homogénea:
+$$
+p''+5p'+6p=0
+$$
+y polinomio característico:
+$$
+r^2+5r+6=0
+$$`,
+          md`Factorización:
+$$
+(r+2)(r+3)=0\Rightarrow r_1=-2,\;r_2=-3
+$$`,
+          md`Solución homogénea:
+$$
+p_h(t)=c_1e^{-2t}+c_2e^{-3t}
+$$`,
+          md`Particular:
+$$
+p_p(t)=A,\;6A=24\Rightarrow A=4
+$$`,
+          md`General:
+$$
+p(t)=c_1e^{-2t}+c_2e^{-3t}+4
+$$`,
+          md`Con $$p(0)=1$$:
+$$
+c_1+c_2+4=1\Rightarrow c_1+c_2=-3
+$$`,
+          md`Derivamos y usamos $$p'(0)=0$$:
+$$
+p'(t)=-2c_1e^{-2t}-3c_2e^{-3t}\Rightarrow -2c_1-3c_2=0
+$$`,
+          md`Sistema:
+$$
+\begin{cases}
+c_1+c_2=-3\\
+-2c_1-3c_2=0
+\end{cases}
+$$
+de donde $$c_1=-9$$ y $$c_2=6$$.`,
+          md`Resultado:
+$$
+p(t)=4-9e^{-2t}+6e^{-3t}
+$$`,
         ],
         result: md`
 $$
@@ -738,14 +954,14 @@ p(t)=4-9e^{-2t}+6e^{-3t}
 $$
 `,
         interpretation: md`
-El precio arranca en $1$ y sube hacia $4$ sin oscilación.
+El precio parte en 1 y sube hacia 4 sin rebotes. Las raíces reales negativas explican la convergencia estable que se observa en la gráfica.
 `,
         errors: [
           'Olvidar que el equilibrio se obtiene al anular $p\'$ y $p\'\'.$',
           'Resolver mal el polinomio característico.',
           'Perder una de las condiciones iniciales.',
         ],
-        visualHint: 'La trayectoria sube hacia 4 y el plano de fase se cierra sin rebotes.',
+        visualHint: 'La visualización debe confirmar convergencia a p=4 sin oscilaciones persistentes y con retrato de fase estable.',
         visual: {
           type: 'secondOrderPrice',
           title: 'Precio con memoria, sin oscilación',
@@ -778,12 +994,47 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y el equilibrio.',
         steps: [
-          md`Equilibrio: $$4p=20\Rightarrow p^*=5$$`,
-          md`$$p''+4p'+4p=0$$`,
-          md`$$r^2+4r+4=(r+2)^2=0$$`,
-          md`$$p_h(t)=(c_1+c_2t)e^{-2t}$$`,
-          md`$$p_p(t)=5$$`,
-          md`Con las condiciones iniciales se obtiene $$c_1=2$$ y $$c_2=2$$.`,
+          md`Equilibrio:
+$$
+4p=20\Rightarrow p^*=5
+$$`,
+          md`Parte homogénea:
+$$
+p''+4p'+4p=0
+$$`,
+          md`Característico:
+$$
+r^2+4r+4=(r+2)^2=0
+$$
+hay raíz doble $$r=-2$$.`,
+          md`Con raíz doble:
+$$
+p_h(t)=(c_1+c_2t)e^{-2t}
+$$`,
+          md`Particular:
+$$
+p_p(t)=A,\;4A=20\Rightarrow A=5
+$$`,
+          md`General:
+$$
+p(t)=(c_1+c_2t)e^{-2t}+5
+$$`,
+          md`Con $$p(0)=7$$:
+$$
+7=c_1+5\Rightarrow c_1=2
+$$`,
+          md`Derivada:
+$$
+p'(t)=\big(c_2-2c_1-2c_2t\big)e^{-2t}
+$$
+Con $$p'(0)=-2$$:
+$$
+-2=c_2-2(2)\Rightarrow c_2=2
+$$`,
+          md`Resultado:
+$$
+p(t)=(2+2t)e^{-2t}+5
+$$`,
         ],
         result: md`
 $$
@@ -791,14 +1042,14 @@ p(t)=(2+2t)e^{-2t}+5
 $$
 `,
         interpretation: md`
-El precio inicia arriba del equilibrio y baja hacia $5$ sin oscilar.
+El precio inicia en 7 y desciende hacia 5. El término exponencial con raíz doble produce un ajuste estable, sin oscilación, y cada vez más lento.
 `,
         errors: [
           'Olvidar la raíz doble.',
           'Derivar mal el término $(c_1+c_2t)e^{-2t}$.',
           'Cambiar el signo al aplicar la condición inicial.',
         ],
-        visualHint: 'La trayectoria desciende hacia 5 y el ajuste se apaga sin rebotes.',
+        visualHint: 'La gráfica debe mostrar caída desde 7 y aproximación suave a p=5 con pendiente decreciente.',
         visual: {
           type: 'secondOrderPrice',
           title: 'Ajuste crítico del precio',
@@ -831,12 +1082,46 @@ $$
 `,
         ask: 'Encontrar la trayectoria del precio y reconocer las oscilaciones.',
         steps: [
-          md`Equilibrio: $$5p=15\Rightarrow p^*=3$$`,
-          md`$$r^2+2r+5=0$$`,
-          md`$$r=-1\pm 2i$$`,
-          md`$$p_h(t)=e^{-t}(c_1\cos 2t+c_2\sin 2t)$$`,
-          md`$$p_p(t)=3$$`,
-          md`Con las condiciones iniciales se obtiene $$c_1=1$$ y $$c_2=1$$.`,
+          md`Equilibrio:
+$$
+5p=15\Rightarrow p^*=3
+$$`,
+          md`Polinomio característico:
+$$
+r^2+2r+5=0
+$$`,
+          md`Raíces complejas:
+$$
+r=\frac{-2\pm\sqrt{4-20}}{2}=-1\pm2i
+$$`,
+          md`Homogénea real:
+$$
+p_h(t)=e^{-t}(c_1\cos 2t+c_2\sin 2t)
+$$`,
+          md`Particular:
+$$
+p_p(t)=A,\;5A=15\Rightarrow A=3
+$$`,
+          md`General:
+$$
+p(t)=3+e^{-t}(c_1\cos 2t+c_2\sin 2t)
+$$`,
+          md`Con $$p(0)=4$$:
+$$
+4=3+c_1\Rightarrow c_1=1
+$$`,
+          md`Derivamos para usar $$p'(0)=1$$:
+$$
+p'(t)=e^{-t}\big[(-c_1+2c_2)\cos 2t+(-c_2-2c_1)\sin 2t\big]
+$$
+Al evaluar en $$t=0$$:
+$$
+1=-c_1+2c_2=-1+2c_2\Rightarrow c_2=1
+$$`,
+          md`Resultado:
+$$
+p(t)=3+e^{-t}(\cos 2t+\sin 2t)
+$$`,
         ],
         result: md`
 $$
@@ -844,14 +1129,14 @@ p(t)=3+e^{-t}(\cos 2t+\sin 2t)
 $$
 `,
         interpretation: md`
-El precio rebota alrededor de $3$ y cada rebote es menor que el anterior.
+El precio oscila alrededor de 3 porque aparecen seno y coseno. La amplitud disminuye por el factor $$e^{-t}$$, así que cada rebote es menor que el anterior.
 `,
         errors: [
           'Ignorar la parte imaginaria de las raíces.',
           'Olvidar el factor $e^{-t}$ que amortigua la oscilación.',
           'Perder el equilibrio al escribir la solución particular.',
         ],
-        visualHint: 'La curva oscila alrededor de 3 y se va acercando al equilibrio con rebotes más pequeños.',
+        visualHint: 'La visualización debe mostrar cruces alrededor de p=3 y una envolvente decreciente que evidencie oscilación amortiguada.',
         visual: {
           type: 'secondOrderPrice',
           title: 'Oscilación amortiguada',

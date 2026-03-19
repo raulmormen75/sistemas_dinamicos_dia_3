@@ -1,0 +1,485 @@
+Lección de Evans y precio de segundo orden
+Material de clase
+
+0. Repaso previo
+
+Antes de resolver los ejercicios conviene fijar cuatro ideas:
+
+1. p(t) es el precio en el tiempo t.
+2. p'(t) es la velocidad con la que cambia el precio.
+3. p''(t) es el cambio de esa velocidad.
+4. p(0) y p'(0) no dan el equilibrio; solo fijan el punto de arranque.
+
+En economía, la demanda y la oferta suelen escribirse como:
+
+D(p) = a - bp
+S(p) = c + dp
+
+El exceso de demanda es:
+
+E(p) = D(p) - S(p)
+
+Si E(p) > 0, el precio tiende a subir.
+Si E(p) < 0, el precio tiende a bajar.
+Si E(p) = 0, hay equilibrio.
+
+El precio de equilibrio p* se obtiene cuando D(p) = S(p).
+
+1. Modelo de Evans con ajuste de precios
+
+La idea central es:
+
+p'(t) = k(D(p) - S(p))
+
+Si la demanda supera a la oferta, el precio sube.
+Si la oferta supera a la demanda, el precio baja.
+
+Ejemplo del profesor
+
+Datos:
+
+D(p) = 14 - 2p
+S(p) = -4 + p
+p(0) = 4
+p'(t) = 2(D(p) - S(p))
+
+Paso 1. Sustituir demanda y oferta:
+
+p'(t) = 2[(14 - 2p) - (-4 + p)]
+
+Paso 2. Quitar paréntesis con cuidado:
+
+(14 - 2p) - (-4 + p) = 14 - 2p + 4 - p = 18 - 3p
+
+Entonces:
+
+p'(t) = 2(18 - 3p)
+
+Paso 3. Multiplicar por 2:
+
+p'(t) = 36 - 6p
+
+Paso 4. Reacomodar:
+
+p'(t) + 6p = 36
+
+Paso 5. Resolver la homogénea:
+
+p'_h + 6p_h = 0
+
+La solución es:
+
+p_h(t) = Ce^{-6t}
+
+Paso 6. Buscar una particular constante:
+
+p_p(t) = A
+
+Sustituyendo:
+
+6A = 36
+
+Por tanto:
+
+A = 6
+
+Paso 7. Escribir la solución general:
+
+p(t) = Ce^{-6t} + 6
+
+Paso 8. Usar la condición inicial:
+
+p(0) = 4
+
+4 = C + 6
+
+C = -2
+
+Solución final:
+
+p(t) = 6 - 2e^{-6t}
+
+Interpretación:
+
+El precio inicia en 4, por debajo del equilibrio 6. Por eso la trayectoria sube rápido al principio y luego se aplana hasta acercarse a 6.
+
+Ejercicio 1 de Evans
+
+Datos:
+
+D(p) = 20 - p
+S(p) = 2 + p
+p(0) = 12
+p'(t) = 3(D(p) - S(p))
+
+Paso 1. Sustituir:
+
+p'(t) = 3[(20 - p) - (2 + p)]
+
+Paso 2. Simplificar el exceso de demanda:
+
+(20 - p) - (2 + p) = 20 - p - 2 - p = 18 - 2p
+
+Paso 3. Multiplicar por 3:
+
+p'(t) = 3(18 - 2p) = 54 - 6p
+
+Paso 4. Reacomodar:
+
+p'(t) + 6p = 54
+
+Paso 5. Resolver la homogénea:
+
+p'_h + 6p_h = 0
+
+p_h(t) = Ce^{-6t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+6A = 54
+
+A = 9
+
+Paso 7. Solución general:
+
+p(t) = Ce^{-6t} + 9
+
+Paso 8. Usar la condición inicial:
+
+p(0) = 12
+
+12 = C + 9
+
+C = 3
+
+Resultado:
+
+p(t) = 9 + 3e^{-6t}
+
+Interpretación:
+
+El precio arranca arriba del equilibrio y desciende hacia 9 de manera estable.
+
+Ejercicio 2 de Evans
+
+Datos:
+
+D(p) = 30 - 2p
+S(p) = 6 + p
+p(0) = 2
+p'(t) = D(p) - S(p)
+
+Paso 1. Sustituir:
+
+p'(t) = (30 - 2p) - (6 + p)
+
+Paso 2. Simplificar:
+
+30 - 2p - 6 - p = 24 - 3p
+
+Paso 3. Reacomodar:
+
+p'(t) + 3p = 24
+
+Paso 4. Resolver la homogénea:
+
+p'_h + 3p_h = 0
+
+p_h(t) = Ce^{-3t}
+
+Paso 5. Buscar la particular:
+
+p_p(t) = A
+
+3A = 24
+
+A = 8
+
+Paso 6. Solución general:
+
+p(t) = Ce^{-3t} + 8
+
+Paso 7. Condición inicial:
+
+p(0) = 2
+
+2 = C + 8
+
+C = -6
+
+Resultado:
+
+p(t) = 8 - 6e^{-3t}
+
+Interpretación:
+
+El precio inicia por debajo del equilibrio y sube hasta acercarse a 8.
+
+2. Modelo de precios con ecuación diferencial de segundo orden
+
+La forma general es:
+
+p''(t) + ap'(t) + bp(t) = c
+
+En este modelo aparece la inercia del ajuste. El precio no solo sube o baja; también puede frenar, tardar más en acomodarse u oscilar alrededor del equilibrio.
+
+Ejemplo base
+
+Datos:
+
+p''(t) + 5p'(t) + 6p(t) = 24
+p(0) = 1
+p'(0) = 0
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio, p'' = 0 y p' = 0.
+
+Entonces:
+
+6p = 24
+
+p* = 4
+
+Paso 2. Resolver la homogénea:
+
+p'' + 5p' + 6p = 0
+
+Paso 3. Obtener el polinomio característico:
+
+r^2 + 5r + 6 = 0
+
+Paso 4. Factorizar:
+
+(r + 2)(r + 3) = 0
+
+Por tanto:
+
+r1 = -2
+r2 = -3
+
+Paso 5. Escribir la homogénea:
+
+p_h(t) = c1e^{-2t} + c2e^{-3t}
+
+Paso 6. Buscar una particular constante:
+
+p_p(t) = A
+
+Sustituyendo:
+
+6A = 24
+
+A = 4
+
+Paso 7. Solución general:
+
+p(t) = c1e^{-2t} + c2e^{-3t} + 4
+
+Paso 8. Usar p(0) = 1:
+
+c1 + c2 + 4 = 1
+
+c1 + c2 = -3
+
+Paso 9. Derivar para usar p'(0) = 0:
+
+p'(t) = -2c1e^{-2t} - 3c2e^{-3t}
+
+Entonces:
+
+-2c1 - 3c2 = 0
+
+Paso 10. Resolver el sistema:
+
+c1 + c2 = -3
+-2c1 - 3c2 = 0
+
+De aquí:
+
+c2 = 6
+c1 = -9
+
+Resultado:
+
+p(t) = 4 - 9e^{-2t} + 6e^{-3t}
+
+Interpretación:
+
+El precio parte en 1 y se aproxima a 4 sin oscilaciones porque las raíces son reales y negativas.
+
+Ejercicio 1 de segundo orden
+
+Datos:
+
+p''(t) + 4p'(t) + 4p(t) = 20
+p(0) = 7
+p'(0) = -2
+
+Paso 1. Hallar el equilibrio:
+
+4p = 20
+
+p* = 5
+
+Paso 2. Resolver la homogénea:
+
+p'' + 4p' + 4p = 0
+
+Paso 3. Polinomio característico:
+
+r^2 + 4r + 4 = 0
+
+Paso 4. Factorizar:
+
+(r + 2)^2 = 0
+
+Raíz doble:
+
+r = -2
+
+Paso 5. Escribir la homogénea:
+
+p_h(t) = (c1 + c2t)e^{-2t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+4A = 20
+
+A = 5
+
+Paso 7. Solución general:
+
+p(t) = (c1 + c2t)e^{-2t} + 5
+
+Paso 8. Usar p(0) = 7:
+
+7 = c1 + 5
+
+c1 = 2
+
+Paso 9. Derivar:
+
+p'(t) = (c2 - 2c1 - 2c2t)e^{-2t}
+
+Paso 10. Usar p'(0) = -2:
+
+-2 = c2 - 2c1
+
+Como c1 = 2:
+
+-2 = c2 - 4
+
+c2 = 2
+
+Resultado:
+
+p(t) = (2 + 2t)e^{-2t} + 5
+
+Interpretación:
+
+El precio empieza arriba del equilibrio y baja hacia 5 sin oscilación. La raíz doble negativa conserva la estabilidad.
+
+Ejercicio 2 de segundo orden
+
+Datos:
+
+p''(t) + 2p'(t) + 5p(t) = 15
+p(0) = 4
+p'(0) = 1
+
+Paso 1. Hallar el equilibrio:
+
+5p = 15
+
+p* = 3
+
+Paso 2. Resolver la homogénea:
+
+p'' + 2p' + 5p = 0
+
+Paso 3. Polinomio característico:
+
+r^2 + 2r + 5 = 0
+
+Paso 4. Aplicar la fórmula general:
+
+r = (-2 ± sqrt(4 - 20))/2
+
+r = (-2 ± sqrt(-16))/2
+
+r = -1 ± 2i
+
+Paso 5. Escribir la homogénea real:
+
+p_h(t) = e^{-t}(c1 cos 2t + c2 sin 2t)
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+5A = 15
+
+A = 3
+
+Paso 7. Solución general:
+
+p(t) = 3 + e^{-t}(c1 cos 2t + c2 sin 2t)
+
+Paso 8. Usar p(0) = 4:
+
+4 = 3 + c1
+
+c1 = 1
+
+Paso 9. Derivar para usar p'(0) = 1:
+
+p'(t) = e^{-t}[(-c1 + 2c2)cos 2t + (-c2 - 2c1)sin 2t]
+
+En t = 0:
+
+1 = -c1 + 2c2
+
+Como c1 = 1:
+
+1 = -1 + 2c2
+
+c2 = 1
+
+Resultado:
+
+p(t) = 3 + e^{-t}(cos 2t + sin 2t)
+
+Interpretación:
+
+El precio rebota alrededor de 3, pero cada rebote es menor porque la amplitud se amortigua con e^{-t}.
+
+3. Comparación directa
+
+Modelo de Evans:
+
+p'(t) = k(D - S)
+
+Pregunta central:
+
+¿Qué dice el desequilibrio actual del mercado?
+
+Modelo de segundo orden:
+
+p''(t) + ap'(t) + bp(t) = c
+
+Pregunta central:
+
+¿Cómo cambia la velocidad del precio con el tiempo?
+
+Idea corta:
+
+- Evans: ajuste directo.
+- Segundo orden: ajuste con memoria, freno u oscilación.
+
+Si el mercado se corrige de inmediato, Evans basta.
+Si la gráfica muestra rebotes o retardo, conviene segundo orden.

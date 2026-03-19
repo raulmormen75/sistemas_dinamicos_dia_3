@@ -522,8 +522,17 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
   const equilibrium = props.a / props.b;
   const times = useMemo(() => range(0, props.tMax, 180), [props.tMax]);
   const stateRange = useMemo(() => range(props.xMin, props.xMax, 180), [props.xMax, props.xMin]);
+  const slopeFn = (value) => props.a - props.b * value;
   const solution = (time, x0) => equilibrium + (x0 - equilibrium) * Math.exp(-props.b * time);
   const activePoint = solution(cursor.value, initial);
+  const initialSlope = slopeFn(initial);
+  const displacement = initial - equilibrium;
+  const directionText =
+    Math.abs(displacement) < 1e-6
+      ? 'La condición inicial ya coincide con el equilibrio.'
+      : displacement > 0
+        ? 'El valor inicial está por encima del equilibrio y la trayectoria desciende.'
+        : 'El valor inicial está por debajo del equilibrio y la trayectoria asciende.';
   const activeTrajectory = {
     type: 'scatter',
     mode: 'lines',
@@ -547,8 +556,6 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
     hovertemplate: `${props.label}(0)=${x0}<extra></extra>`,
     name: `${props.label}(0)=${x0}`,
   }));
-
-  const slopeFn = (value) => props.a - props.b * value;
 
   return (
     <VisualizationShell title={title} summary={summary}>
@@ -595,7 +602,7 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
         <div className="plot-card">
           {view === 'trayectorias' ? (
             <PlotFigure
-              data={[
+      data={[
         ...familyTraces,
         activeTrajectory,
         {
@@ -614,11 +621,31 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
           name: 'Punto activo',
           marker: { size: 12, color: palette.gold, line: { color: palette.surface, width: 2 } },
         },
+        {
+          type: 'scatter',
+          mode: 'markers',
+          x: [0],
+          y: [initial],
+          name: 'Condición inicial',
+          marker: { size: 11, color: palette.wine, line: { color: palette.surface, width: 2 } },
+        },
       ]}
       layout={{
         xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
         yaxis: { title: props.variableName, gridcolor: palette.grid, color: palette.graphite },
         legend: { orientation: 'h', y: 1.14, x: 0 },
+        annotations: [
+          {
+            x: props.tMax * 0.92,
+            y: equilibrium,
+            text: `p* = ${formatNumber(equilibrium, 2)}`,
+            showarrow: false,
+            xanchor: 'right',
+            yanchor: 'bottom',
+            font: { color: palette.wine, size: 12 },
+            bgcolor: 'rgba(0,0,0,0)',
+          },
+        ],
       }}
       theme={theme}
     />
@@ -642,11 +669,19 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
                   name: 'Punto activo',
                   marker: { size: 12, color: palette.gold, line: { color: palette.surface, width: 2 } },
                 },
+                {
+                  type: 'scatter',
+                  mode: 'lines',
+                  x: [0, props.tMax],
+                  y: [equilibrium, equilibrium],
+                  name: 'Equilibrio',
+                  line: { color: palette.wine, width: 2, dash: 'dash' },
+                },
               ]}
               layout={{
                 xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
                 yaxis: { title: props.variableName, gridcolor: palette.grid, color: palette.graphite },
-                showlegend: false,
+                legend: { orientation: 'h', y: 1.14, x: 0 },
               }}
               theme={theme}
             />
@@ -671,11 +706,19 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
                 name: 'Equilibrio',
                 marker: { size: 12, color: palette.wine, line: { color: palette.surface, width: 2 } },
               },
+              {
+                type: 'scatter',
+                mode: 'markers',
+                x: [initial],
+                y: [initialSlope],
+                name: 'Estado inicial',
+                marker: { size: 11, color: palette.gold, line: { color: palette.surface, width: 2 } },
+              },
             ]}
             layout={{
               xaxis: { title: props.label, gridcolor: palette.grid, color: palette.graphite },
               yaxis: { title: 'Tasa de cambio', gridcolor: palette.grid, color: palette.graphite },
-              showlegend: false,
+              legend: { orientation: 'h', y: 1.14, x: 0 },
             }}
             theme={theme}
           />
@@ -690,8 +733,10 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
         </div>
       </div>
       <div className="mini-note">
-        <strong>Lectura actual.</strong> El equilibrio es {equilibrium.toFixed(2)}. Con la condición inicial en{' '}
-        {initial.toFixed(1)}, la trayectoria toma el valor {activePoint.toFixed(2)} en el tiempo {cursor.value.toFixed(2)}.
+        <strong>Lectura actual.</strong> El equilibrio es {equilibrium.toFixed(2)} y la ecuación evoluciona con{' '}
+        <code>{`${props.label}' = ${formatNumber(props.a, 2)} - ${formatNumber(props.b, 2)}${props.label}`}</code>.{' '}
+        {directionText} En el tiempo {cursor.value.toFixed(2)}, la trayectoria vale {activePoint.toFixed(2)} y su tasa
+        de cambio es {formatNumber(slopeFn(activePoint), 2)}.
       </div>
     </VisualizationShell>
   );
@@ -1243,6 +1288,8 @@ function solveSecondOrderPrice({ a, b, c, p0, v0 }) {
     return {
       equilibrium,
       type: 'repeated',
+      alpha: r,
+      amplitude0: Math.abs(c1),
       rootMarkdown: `$$r=${formatNumber(r)}$$`,
       behavior: 'Ajuste crítico sin oscilación',
       equationMarkdown: `$$p''(t)+${formatNumber(a)}p'(t)+${formatNumber(b)}p(t)=${formatNumber(c)}$$`,
@@ -1262,6 +1309,7 @@ function solveSecondOrderPrice({ a, b, c, p0, v0 }) {
     return {
       equilibrium,
       type: 'real',
+      amplitude0: Math.abs(c1) + Math.abs(c2),
       rootMarkdown: `$$r_1=${formatNumber(r1)},\\qquad r_2=${formatNumber(r2)}$$`,
       behavior: 'Ajuste estable sin oscilación',
       equationMarkdown: `$$p''(t)+${formatNumber(a)}p'(t)+${formatNumber(b)}p(t)=${formatNumber(c)}$$`,
@@ -1279,6 +1327,9 @@ function solveSecondOrderPrice({ a, b, c, p0, v0 }) {
   return {
     equilibrium,
     type: 'complex',
+    alpha,
+    beta,
+    amplitude0: Math.sqrt(c1 * c1 + c2 * c2),
     rootMarkdown: `$$r=${formatNumber(alpha)}\\pm ${formatNumber(beta)}i$$`,
     behavior: 'Oscilación amortiguada',
     equationMarkdown: `$$p''(t)+${formatNumber(a)}p'(t)+${formatNumber(b)}p(t)=${formatNumber(c)}$$`,
@@ -1301,6 +1352,7 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
   const velocities = times.map((time) => solver.velocity(time));
   const activePrice = solver.solution(cursor.value);
   const activeVelocity = solver.velocity(cursor.value);
+  const envelope = solver.type === 'complex' ? times.map((time) => solver.amplitude0 * Math.exp(solver.alpha * time)) : null;
 
   return (
     <VisualizationShell title={title} summary={summary}>
@@ -1363,11 +1415,52 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
                   name: 'Punto activo',
                   marker: { size: 12, color: palette.gold, line: { color: palette.surface, width: 2 } },
                 },
+                {
+                  type: 'scatter',
+                  mode: 'markers',
+                  x: [0],
+                  y: [props.p0],
+                  name: 'Condición inicial',
+                  marker: { size: 11, color: palette.wine, line: { color: palette.surface, width: 2 } },
+                },
+                ...(solver.type === 'complex'
+                  ? [
+                      {
+                        type: 'scatter',
+                        mode: 'lines',
+                        x: times,
+                        y: times.map((time, index) => solver.equilibrium + envelope[index]),
+                        name: 'Banda superior',
+                        line: { color: palette.accent, width: 1.8, dash: 'dot' },
+                        hoverinfo: 'skip',
+                      },
+                      {
+                        type: 'scatter',
+                        mode: 'lines',
+                        x: times,
+                        y: times.map((time, index) => solver.equilibrium - envelope[index]),
+                        name: 'Banda inferior',
+                        line: { color: palette.accent, width: 1.8, dash: 'dot' },
+                        hoverinfo: 'skip',
+                      },
+                    ]
+                  : []),
               ]}
               layout={{
                 xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
                 yaxis: { title: props.variableName ?? 'Precio', gridcolor: palette.grid, color: palette.graphite },
                 legend: { orientation: 'h', y: 1.12, x: 0 },
+                annotations: [
+                  {
+                    x: props.tMax * 0.92,
+                    y: solver.equilibrium,
+                    text: `p* = ${formatNumber(solver.equilibrium, 2)}`,
+                    showarrow: false,
+                    xanchor: 'right',
+                    yanchor: 'bottom',
+                    font: { color: palette.wine, size: 12 },
+                  },
+                ],
               }}
               theme={theme}
             />
@@ -1389,6 +1482,14 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
                   y: [0],
                   name: 'Equilibrio',
                   marker: { size: 12, color: palette.wine, line: { color: palette.surface, width: 2 } },
+                },
+                {
+                  type: 'scatter',
+                  mode: 'markers',
+                  x: [props.p0],
+                  y: [props.v0],
+                  name: 'Estado inicial',
+                  marker: { size: 11, color: palette.accent, line: { color: palette.surface, width: 2 } },
                 },
                 {
                   type: 'scatter',
@@ -1426,12 +1527,21 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
               <p className="prompt-label">Tipo de respuesta</p>
               <p className="rich-text">{solver.behavior}</p>
             </article>
+            <article className="summary-card">
+              <p className="prompt-label">Datos iniciales</p>
+              <p className="rich-text">
+                {`${props.variableName ?? 'Precio'}(0) = ${formatNumber(props.p0, 2)},  ${props.label ?? 'p'}'(0) = ${formatNumber(props.v0, 2)}`}
+              </p>
+            </article>
           </div>
         </div>
       </div>
       <div className="mini-note">
         <strong>Lectura actual.</strong> En {props.variableName?.toLowerCase() ?? 'precio'} = {formatNumber(activePrice, 2)}, la velocidad vale{' '}
-        {formatNumber(activeVelocity, 2)} cuando el tiempo es {formatNumber(cursor.value, 2)}.
+        {formatNumber(activeVelocity, 2)} cuando el tiempo es {formatNumber(cursor.value, 2)}.{' '}
+        {solver.type === 'complex'
+          ? 'La banda punteada muestra cómo se reduce la amplitud de oscilación alrededor del equilibrio.'
+          : 'La trayectoria converge al equilibrio sin oscilaciones sostenidas.'}
       </div>
     </VisualizationShell>
   );
@@ -1442,6 +1552,21 @@ function ModelComparisonVisualizer({ title, summary, props, theme }) {
   const left = props?.left ?? {};
   const right = props?.right ?? {};
   const rows = props?.rows ?? [];
+  const derivedRows =
+    rows.length > 0
+      ? rows
+      : [
+          {
+            label: 'Ecuación',
+            left: "Primera derivada: velocidad de ajuste instantáneo.",
+            right: "Segunda derivada + fricción: ajuste con memoria.",
+          },
+          {
+            label: 'Forma de curva',
+            left: 'Aproximación directa al equilibrio, sin rebotes.',
+            right: 'Puede acercarse con rebotes amortiguados.',
+          },
+        ];
 
   return (
     <VisualizationShell title={title} summary={summary}>
@@ -1472,7 +1597,7 @@ function ModelComparisonVisualizer({ title, summary, props, theme }) {
         </article>
       </div>
       <div className="comparison-strip">
-        {rows.map((row) => (
+        {derivedRows.map((row) => (
           <article key={row.label} className="comparison-strip__item">
             <p className="prompt-label">{row.label}</p>
             <p>
@@ -1489,7 +1614,13 @@ function ModelComparisonVisualizer({ title, summary, props, theme }) {
           {props.noteTitle ? <strong>{props.noteTitle}.</strong> : <strong>Lectura final.</strong>}{' '}
           <MathMarkdown content={props.note} className="rich-text rich-text--compact" />
         </div>
-      ) : null}
+      ) : (
+        <div className="mini-note">
+          <strong>Lectura final.</strong> Evans conecta directamente el signo del exceso de demanda con la dirección del
+          precio. El modelo de segundo orden agrega inercia y permite visualizar cuándo el sistema entra con rebotes y
+          cuándo converge sin oscilación.
+        </div>
+      )}
     </VisualizationShell>
   );
 }
