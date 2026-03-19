@@ -136,33 +136,33 @@ Este mapa junta las piezas que se usarán en toda la lección. Conviene tenerlo 
       props: {
         cards: [
           {
-            title: 'Precio y variación',
+            title: 'Precio y Dinámica',
             content: md`
-- $p(t)$: nivel del precio.
-- $p'(t)$: velocidad del precio.
-- $p''(t)$: aceleración del precio.
+- **Nivel ($p$):** Posición actual del precio en el mercado.
+- **Velocidad ($p'$):** Ritmo y dirección del ajuste instantáneo.
+- **Inercia ($p''$):** Aceleración o freno de la tendencia actual.
             `,
           },
           {
-            title: 'Demanda y oferta',
+            title: 'Señales de Mercado',
             content: md`
-- $D(p)=a-bp$
-- $S(p)=c+dp$
-- $E(p)=D(p)-S(p)$
+- **Demanda y Oferta:** Determinan las fuerzas opuestas.
+- **Exceso ($E$):** La brecha que genera la presión del precio.
+- **Respuesta:** Magnitud del ajuste según el desequilibrio.
             `,
           },
           {
-            title: 'Equilibrio y signo',
+            title: 'Estado del Sistema',
             content: md`
-- Si $E(p)>0$, el precio sube.
-- Si $E(p)<0$, el precio baja.
-- Si $E(p)=0$, el mercado está en equilibrio.
+- **Arranque:** Definido por las condiciones iniciales.
+- **Equilibrio ($p^*$):** El punto donde las fuerzas se anulan.
+- **Estabilidad:** Capacidad del sistema para converger al destino.
             `,
           },
         ],
-        noteTitle: 'Lectura rápida',
+        noteTitle: 'Estrategia de lectura',
         note: md`
-La condición inicial fija el arranque. El equilibrio fija el nivel de largo plazo.
+La **condición inicial** determina el punto de partida y la velocidad de arranque, mientras que el **equilibrio** define el nivel de largo plazo hacia el cual tiende el sistema.
         `,
       },
     },

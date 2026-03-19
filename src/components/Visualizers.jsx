@@ -1265,75 +1265,126 @@ function SummaryConceptMap({ palette, cards }) {
           equilibrio y el sentido del ajuste.
         </p>
       </div>
-      <svg viewBox="0 0 760 430" className="concept-map" role="img" aria-label="Mapa conceptual de lectura del modelo">
+      <svg viewBox="0 0 760 450" className="concept-map" role="img" aria-label="Mapa conceptual de lectura del modelo">
+        {/* Definiciones para sombras y gradientes */}
+        <defs>
+          <filter id="shadow-soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
+            <feOffset dx="0" dy="4" result="offsetblur" />
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.14" />
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <linearGradient id="grad-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={palette.gold} stopOpacity="0.12" />
+            <stop offset="100%" stopColor={palette.gold} stopOpacity="0.04" />
+          </linearGradient>
+          <linearGradient id="grad-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={palette.accent} stopOpacity="0.12" />
+            <stop offset="100%" stopColor={palette.accent} stopOpacity="0.04" />
+          </linearGradient>
+          <linearGradient id="grad-wine" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={palette.wine} stopOpacity="0.08" />
+            <stop offset="100%" stopColor={palette.wine} stopOpacity="0.03" />
+          </linearGradient>
+        </defs>
+
+        {/* Conexiones curvas refinadas */}
         <path
-          d="M378 170 C280 170 220 150 162 118"
+          d="M380 185 C280 185 200 160 150 118"
           fill="none"
           stroke={palette.gold}
-          strokeWidth="3"
+          strokeWidth="2.8"
           strokeLinecap="round"
-          opacity="0.7"
+          strokeDasharray="4 6"
+          opacity="0.5"
         />
         <path
-          d="M382 170 C476 170 538 150 598 118"
+          d="M380 185 C480 185 560 160 610 118"
           fill="none"
           stroke={palette.accent}
-          strokeWidth="3"
+          strokeWidth="2.8"
           strokeLinecap="round"
-          opacity="0.78"
+          strokeDasharray="4 6"
+          opacity="0.5"
         />
         <path
-          d="M380 244 C380 286 380 308 380 332"
+          d="M380 250 L380 320"
           fill="none"
           stroke={palette.wine}
-          strokeWidth="3"
+          strokeWidth="2.8"
           strokeLinecap="round"
-          opacity="0.68"
+          strokeDasharray="4 6"
+          opacity="0.5"
         />
-        <path d="M160 116 l16 -6 l-3 18 Z" fill={palette.gold} opacity="0.86" />
-        <path d="M598 118 l-16 -6 l3 18 Z" fill={palette.accent} opacity="0.9" />
-        <path d="M380 332 l-10 -14 h20 Z" fill={palette.wine} opacity="0.82" />
 
-        <rect x="254" y="128" width="252" height="118" rx="28" fill={palette.surface} stroke={palette.navy} strokeWidth="3.2" />
-        <text x="380" y="164" textAnchor="middle" fontSize="15" fontWeight="700" fill={palette.gold}>
-          Lectura central
-        </text>
-        <text x="380" y="194" textAnchor="middle" fontSize="28" fontWeight="800" fill={palette.graphite}>
-          Precio y ajuste
-        </text>
-        <text x="380" y="219" textAnchor="middle" fontSize="15" fill={palette.textMuted}>
-          p(t), p&apos;(t) y p&apos;&apos;(t)
-        </text>
+        {/* Flechas de dirección */}
+        <path d="M140 108 L155 125 L160 105 Z" fill={palette.gold} opacity="0.8" />
+        <path d="M620 108 L605 125 L600 105 Z" fill={palette.accent} opacity="0.8" />
+        <path d="M380 334 L372 320 H388 Z" fill={palette.wine} opacity="0.8" />
 
-        <rect x="36" y="42" width="232" height="96" rx="24" fill={palette.surfaceSoft} stroke={palette.gold} strokeWidth="2.4" />
-        <text x="58" y="74" fontSize="13" fontWeight="700" fill={palette.gold}>
-          {priceCard.title ?? 'Precio y variación'}
-        </text>
-        <text x="58" y="102" fontSize="16" fontWeight="700" fill={palette.graphite}>
-          Nivel, velocidad y aceleración
-        </text>
-        <text x="58" y="124" fontSize="14" fill={palette.textMuted}>
-          Lee qué valor tiene el precio y cómo cambia.
-        </text>
+        {/* Bloque: Variables de Estado (Izquierda) */}
+        <g filter="url(#shadow-soft)">
+          <rect x="30" y="32" width="240" height="106" rx="22" fill={palette.surface} stroke={palette.gold} strokeWidth="2.2" />
+          <rect x="30" y="32" width="240" height="106" rx="22" fill="url(#grad-gold)" stroke="none" />
+          <text x="54" y="62" fontSize="12" fontWeight="800" fill={palette.gold} letterSpacing="0.08em" textTransform="uppercase">
+            {priceCard.title ?? 'Dinámica'}
+          </text>
+          <text x="54" y="90" fontSize="17" fontWeight="800" fill={palette.graphite}>
+            Estado y Tendencia
+          </text>
+          <text x="54" y="112" fontSize="13.5" fill={palette.textMuted}>
+            Nivel: p, Cambio: p', Inercia: p''
+          </text>
+        </g>
 
-        <rect x="492" y="42" width="232" height="96" rx="24" fill={palette.surfaceSoft} stroke={palette.accent} strokeWidth="2.4" />
-        <text x="514" y="74" fontSize="13" fontWeight="700" fill={palette.accent}>
-          {marketCard.title ?? 'Demanda y oferta'}
-        </text>
-        <text x="514" y="102" fontSize="16" fontWeight="700" fill={palette.graphite}>
-          Exceso de demanda
-        </text>
-        <text x="514" y="124" fontSize="14" fill={palette.textMuted}>
-          Si E(p) es positivo, el precio sube; si es negativo, baja.
-        </text>
+        {/* Bloque: Señal de Mercado (Derecha) */}
+        <g filter="url(#shadow-soft)">
+          <rect x="490" y="32" width="240" height="106" rx="22" fill={palette.surface} stroke={palette.accent} strokeWidth="2.2" />
+          <rect x="490" y="32" width="240" height="106" rx="22" fill="url(#grad-accent)" stroke="none" />
+          <text x="514" y="62" fontSize="12" fontWeight="800" fill={palette.accent} letterSpacing="0.08em" textTransform="uppercase">
+            {marketCard.title ?? 'Fuerzas'}
+          </text>
+          <text x="514" y="90" fontSize="17" fontWeight="800" fill={palette.graphite}>
+            Presión del Mercado
+          </text>
+          <text x="514" y="112" fontSize="13.5" fill={palette.textMuted}>
+            Exceso de demanda mueve el precio.
+          </text>
+        </g>
 
-        <rect x="228" y="334" width="304" height="72" rx="24" fill={palette.surfaceSoft} stroke={palette.wine} strokeWidth="2.4" />
-        <text x="380" y="364" textAnchor="middle" fontSize="13" fontWeight="700" fill={palette.wine}>
-          {balanceCard.title ?? 'Equilibrio y signo'}
-        </text>
-        <text x="380" y="388" textAnchor="middle" fontSize="16" fontWeight="700" fill={palette.graphite}>
-          La condición inicial fija el arranque y el equilibrio fija el destino.
-        </text>
+        {/* Bloque Central: Núcleo del Modelo */}
+        <g filter="url(#shadow-soft)">
+          <rect x="250" y="152" width="260" height="126" rx="30" fill={palette.surface} stroke={palette.gold} strokeWidth="3.6" />
+          <text x="380" y="186" textAnchor="middle" fontSize="14" fontWeight="800" fill={palette.gold} letterSpacing="0.1em" textTransform="uppercase">
+            Lectura Central
+          </text>
+          <text x="380" y="220" textAnchor="middle" fontSize="29" fontWeight="800" fill={palette.graphite}>
+            Precio y Ajuste
+          </text>
+          <text x="380" y="248" textAnchor="middle" fontSize="16" fontWeight="600" fill={palette.textMuted} opacity="0.8">
+            p(t) → Trayectoria Dinámica
+          </text>
+        </g>
+
+        {/* Bloque: Resultados (Abajo) */}
+        <g filter="url(#shadow-soft)">
+          <rect x="210" y="334" width="340" height="92" rx="22" fill={palette.surface} stroke={palette.wine} strokeWidth="2.2" />
+          <rect x="210" y="334" width="340" height="92" rx="22" fill="url(#grad-wine)" stroke="none" />
+          <text x="380" y="362" textAnchor="middle" fontSize="12" fontWeight="800" fill={palette.wine} letterSpacing="0.08em" textTransform="uppercase">
+            {balanceCard.title ?? 'Fines del Sistema'}
+          </text>
+          <text x="380" y="388" textAnchor="middle" fontSize="16" fontWeight="800" fill={palette.graphite}>
+            La condición inicial fija el arranque,
+          </text>
+          <text x="380" y="410" textAnchor="middle" fontSize="16" fontWeight="800" fill={palette.graphite}>
+            mientras el equilibrio fija el destino.
+          </text>
+        </g>
       </svg>
       <div className="concept-map-band">
         <article className="concept-map-band__item">
