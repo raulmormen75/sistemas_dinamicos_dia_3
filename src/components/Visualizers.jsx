@@ -1304,7 +1304,7 @@ function SummaryConceptMap({ palette, cards }) {
           opacity="0.5"
         />
         <path
-          d="M380 185 C480 185 560 160 610 118"
+          d="M380 185 C490 185 560 155 600 118"
           fill="none"
           stroke={palette.accent}
           strokeWidth="2.8"
@@ -1324,7 +1324,7 @@ function SummaryConceptMap({ palette, cards }) {
 
         {/* Flechas de dirección */}
         <path d="M140 108 L155 125 L160 105 Z" fill={palette.gold} opacity="0.8" />
-        <path d="M620 108 L605 125 L600 105 Z" fill={palette.accent} opacity="0.8" />
+        <path d="M610 108 L595 125 L590 105 Z" fill={palette.accent} opacity="0.8" />
         <path d="M380 334 L372 320 H388 Z" fill={palette.wine} opacity="0.8" />
 
         {/* Bloque: Variables de Estado (Izquierda) */}
@@ -1344,16 +1344,16 @@ function SummaryConceptMap({ palette, cards }) {
 
         {/* Bloque: Señal de Mercado (Derecha) */}
         <g filter="url(#shadow-soft)">
-          <rect x="490" y="32" width="240" height="106" rx="22" fill={palette.surface} stroke={palette.accent} strokeWidth="2.2" />
-          <rect x="490" y="32" width="240" height="106" rx="22" fill="url(#grad-accent)" stroke="none" />
-          <text x="514" y="62" fontSize="12" fontWeight="800" fill={palette.accent} letterSpacing="0.08em" textTransform="uppercase">
-            {marketCard.title ?? 'Fuerzas'}
+          <rect x="470" y="32" width="270" height="106" rx="22" fill={palette.surface} stroke={palette.accent} strokeWidth="2.2" />
+          <rect x="470" y="32" width="270" height="106" rx="22" fill="url(#grad-accent)" stroke="none" />
+          <text x="496" y="62" fontSize="12" fontWeight="800" fill={palette.accent} letterSpacing="0.08em" textTransform="uppercase">
+            {marketCard.title ?? 'Demanda y oferta'}
           </text>
-          <text x="514" y="90" fontSize="17" fontWeight="800" fill={palette.graphite}>
-            Presión del Mercado
+          <text x="496" y="90" fontSize="17" fontWeight="800" fill={palette.graphite}>
+            Exceso de demanda
           </text>
-          <text x="514" y="112" fontSize="13.5" fill={palette.textMuted}>
-            Exceso de demanda mueve el precio.
+          <text x="496" y="112" fontSize="13.5" fill={palette.textMuted}>
+            Si E(p){'>'} 0 sube; si {'<'} 0 baja.
           </text>
         </g>
 
