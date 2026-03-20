@@ -1,0 +1,1196 @@
+Lección de Evans y precio de segundo orden
+Material de clase · Prof. Morales Mendoza Raul
+
+0. Repaso previo
+
+Antes de resolver los ejercicios conviene fijar cuatro ideas:
+
+1. p(t) es el precio en el tiempo t.
+2. p'(t) es la velocidad con la que cambia el precio.
+3. p''(t) es el cambio de esa velocidad.
+4. p(0) y p'(0) no dan el equilibrio; solo fijan el punto de arranque.
+
+En economía, la demanda y la oferta suelen escribirse como:
+
+D(p) = a - bp
+S(p) = c + dp
+
+El exceso de demanda es:
+
+E(p) = D(p) - S(p)
+
+Si E(p) > 0, el precio tiende a subir.
+Si E(p) < 0, el precio tiende a bajar.
+Si E(p) = 0, hay equilibrio.
+
+El precio de equilibrio p* se obtiene cuando D(p) = S(p).
+
+1. Modelo de Evans con ajuste de precios
+
+La idea central es:
+
+p'(t) = k(D(p) - S(p))
+
+Si la demanda supera a la oferta, el precio sube.
+Si la oferta supera a la demanda, el precio baja.
+
+Ejemplo del profesor
+
+Datos:
+
+D(p) = 14 - 2p
+S(p) = -4 + p
+p(0) = 4
+p'(t) = 2(D(p) - S(p))
+
+Paso 1. Sustituir demanda y oferta:
+
+p'(t) = 2[(14 - 2p) - (-4 + p)]
+
+Paso 2. Quitar paréntesis con cuidado:
+
+(14 - 2p) - (-4 + p) = 14 - 2p + 4 - p = 18 - 3p
+
+Entonces:
+
+p'(t) = 2(18 - 3p)
+
+Paso 3. Multiplicar por 2:
+
+p'(t) = 36 - 6p
+
+Explicación del paso 3:
+
+Aquí solo se distribuye el 2 sobre cada término del paréntesis.
+
+2(18 - 3p) = 2(18) - 2(3p) = 36 - 6p
+
+El resultado muestra dos fuerzas al mismo tiempo:
+- 36 empuja el precio hacia arriba.
+- -6p hace que el propio nivel del precio frene ese aumento.
+
+Paso 4. Reacomodar:
+
+p'(t) + 6p = 36
+
+Explicación del paso 4:
+
+No se está cambiando la ecuación; solo se está ordenando.
+
+Partimos de:
+
+p'(t) = 36 - 6p
+
+Sumamos 6p en ambos lados:
+
+p'(t) + 6p = 36 - 6p + 6p
+
+Como -6p + 6p = 0, queda:
+
+p'(t) + 6p = 36
+
+Se hace así para dejar la ecuación en la forma lineal:
+
+p'(t) + ap = b
+
+En este caso:
+
+a = 6
+b = 36
+
+Paso 5. Resolver la homogénea:
+
+p'_h + 6p_h = 0
+
+Explicación del paso 5:
+
+Primero se resuelve la parte homogénea, que es la ecuación sin el término constante 36.
+
+p'_h = -6p_h
+
+Ahora se separan variables:
+
+dp_h / p_h = -6 dt
+
+Se integra en ambos lados:
+
+ln|p_h| = -6t + C
+
+Al quitar el logaritmo aparece la exponencial:
+
+p_h(t) = Ce^{-6t}
+
+La base e aparece porque la función exponencial es la que conserva la misma forma al derivarse. Por eso en ecuaciones diferenciales como esta surge de manera natural.
+
+Paso 6. Buscar una particular constante:
+
+p_p(t) = A
+
+Sustituyendo en:
+
+p'(t) + 6p = 36
+
+como la derivada de una constante es 0, queda:
+
+0 + 6A = 36
+
+6A = 36
+
+Por tanto:
+
+A = 6
+
+Explicación del paso 6:
+
+Ese 6 es el precio de equilibrio. Si el precio ya no cambia, entonces p'(t) = 0 y la ecuación se reduce a 6p = 36, de donde sale p = 6.
+
+Paso 7. Escribir la solución general:
+
+p(t) = Ce^{-6t} + 6
+
+Explicación del paso 7:
+
+La solución general se forma sumando:
+- la solución homogénea, que describe cómo se corrige el desajuste inicial
+- la solución particular, que representa el nivel de equilibrio
+
+Por eso:
+
+p(t) = Ce^{-6t} + 6
+
+El término Ce^{-6t} mide la distancia respecto al equilibrio y se va haciendo pequeño con el tiempo porque e^{-6t} tiende a 0 cuando t crece.
+
+Paso 8. Usar la condición inicial:
+
+p(0) = 4
+
+Sustituyendo t = 0 en la solución general:
+
+4 = Ce^{0} + 6
+
+Como e^{0} = 1:
+
+4 = C + 6
+
+C = -2
+
+Solución final:
+
+p(t) = 6 - 2e^{-6t}
+
+Explicación del resultado:
+
+- El 6 es el precio de equilibrio.
+- El -2 indica que el precio inicia 2 unidades por debajo del equilibrio.
+- El término e^{-6t} hace que esa distancia se reduzca con el tiempo.
+
+Interpretación:
+
+El precio arranca en 4 y el equilibrio está en 6. Como el precio inicial está por debajo del equilibrio, hay presión para que suba. Al principio sube más rápido porque el desajuste es mayor. Después el aumento se vuelve más lento, porque el precio ya se está acercando al equilibrio. La trayectoria no sube para siempre; se aproxima poco a poco a 6.
+
+Ejercicio 1 de Evans
+
+Datos:
+
+D(p) = 20 - p
+S(p) = 2 + p
+p(0) = 12
+p'(t) = 3(D(p) - S(p))
+
+Paso 1. Sustituir:
+
+p'(t) = 3[(20 - p) - (2 + p)]
+
+Paso 2. Simplificar el exceso de demanda:
+
+(20 - p) - (2 + p) = 20 - p - 2 - p = 18 - 2p
+
+Paso 3. Multiplicar por 3:
+
+p'(t) = 3(18 - 2p) = 54 - 6p
+
+Paso 4. Reacomodar:
+
+p'(t) + 6p = 54
+
+Paso 5. Resolver la homogénea:
+
+p'_h + 6p_h = 0
+
+p_h(t) = Ce^{-6t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+6A = 54
+
+A = 9
+
+Paso 7. Solución general:
+
+p(t) = Ce^{-6t} + 9
+
+Paso 8. Usar la condición inicial:
+
+p(0) = 12
+
+12 = C + 9
+
+C = 3
+
+Resultado:
+
+p(t) = 9 + 3e^{-6t}
+
+Interpretación:
+
+El precio arranca arriba del equilibrio y desciende hacia 9 de manera estable.
+
+Ejercicio 2 de Evans
+
+Datos:
+
+D(p) = 30 - 2p
+S(p) = 6 + p
+p(0) = 2
+p'(t) = D(p) - S(p)
+
+Paso 1. Sustituir:
+
+p'(t) = (30 - 2p) - (6 + p)
+
+Paso 2. Simplificar:
+
+30 - 2p - 6 - p = 24 - 3p
+
+Paso 3. Reacomodar:
+
+p'(t) + 3p = 24
+
+Paso 4. Resolver la homogénea:
+
+p'_h + 3p_h = 0
+
+p_h(t) = Ce^{-3t}
+
+Paso 5. Buscar la particular:
+
+p_p(t) = A
+
+3A = 24
+
+A = 8
+
+Paso 6. Solución general:
+
+p(t) = Ce^{-3t} + 8
+
+Paso 7. Condición inicial:
+
+p(0) = 2
+
+2 = C + 8
+
+C = -6
+
+Resultado:
+
+p(t) = 8 - 6e^{-3t}
+
+Interpretación:
+
+El precio inicia por debajo del equilibrio y sube hasta acercarse a 8.
+
+2. Modelo de precios con ecuación diferencial de segundo orden
+
+La forma general es:
+
+p''(t) + ap'(t) + bp(t) = c
+
+En este modelo aparece la inercia del ajuste. El precio no solo sube o baja; también puede frenar, tardar más en acomodarse u oscilar alrededor del equilibrio.
+
+Ejemplo base
+
+Datos:
+
+p''(t) + 5p'(t) + 6p(t) = 24
+p(0) = 1
+p'(0) = 0
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio, p'' = 0 y p' = 0.
+
+Entonces:
+
+6p = 24
+
+p* = 4
+
+Paso 2. Resolver la homogénea:
+
+p'' + 5p' + 6p = 0
+
+Paso 3. Obtener el polinomio característico:
+
+r^2 + 5r + 6 = 0
+
+Paso 4. Factorizar:
+
+(r + 2)(r + 3) = 0
+
+Por tanto:
+
+r1 = -2
+r2 = -3
+
+Paso 5. Escribir la homogénea:
+
+p_h(t) = c1e^{-2t} + c2e^{-3t}
+
+Paso 6. Buscar una particular constante:
+
+p_p(t) = A
+
+Sustituyendo:
+
+6A = 24
+
+A = 4
+
+Paso 7. Solución general:
+
+p(t) = c1e^{-2t} + c2e^{-3t} + 4
+
+Paso 8. Usar p(0) = 1:
+
+c1 + c2 + 4 = 1
+
+c1 + c2 = -3
+
+Paso 9. Derivar para usar p'(0) = 0:
+
+p'(t) = -2c1e^{-2t} - 3c2e^{-3t}
+
+Entonces:
+
+-2c1 - 3c2 = 0
+
+Paso 10. Resolver el sistema:
+
+c1 + c2 = -3
+-2c1 - 3c2 = 0
+
+De aquí:
+
+c2 = 6
+c1 = -9
+
+Resultado:
+
+p(t) = 4 - 9e^{-2t} + 6e^{-3t}
+
+Interpretación:
+
+El precio parte en 1 y se aproxima a 4 sin oscilaciones porque las raíces son reales y negativas.
+
+Ejercicio 1 de segundo orden
+
+Datos:
+
+p''(t) + 4p'(t) + 4p(t) = 20
+p(0) = 7
+p'(0) = -2
+
+Paso 1. Hallar el equilibrio:
+
+4p = 20
+
+p* = 5
+
+Paso 2. Resolver la homogénea:
+
+p'' + 4p' + 4p = 0
+
+Paso 3. Polinomio característico:
+
+r^2 + 4r + 4 = 0
+
+Paso 4. Factorizar:
+
+(r + 2)^2 = 0
+
+Raíz doble:
+
+r = -2
+
+Paso 5. Escribir la homogénea:
+
+p_h(t) = (c1 + c2t)e^{-2t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+4A = 20
+
+A = 5
+
+Paso 7. Solución general:
+
+p(t) = (c1 + c2t)e^{-2t} + 5
+
+Paso 8. Usar p(0) = 7:
+
+7 = c1 + 5
+
+c1 = 2
+
+Paso 9. Derivar:
+
+p'(t) = (c2 - 2c1 - 2c2t)e^{-2t}
+
+Paso 10. Usar p'(0) = -2:
+
+-2 = c2 - 2c1
+
+Como c1 = 2:
+
+-2 = c2 - 4
+
+c2 = 2
+
+Resultado:
+
+p(t) = (2 + 2t)e^{-2t} + 5
+
+Interpretación:
+
+El precio empieza arriba del equilibrio y baja hacia 5 sin oscilación. La raíz doble negativa conserva la estabilidad.
+
+Ejercicio 2 de segundo orden
+
+Datos:
+
+p''(t) + 2p'(t) + 5p(t) = 15
+p(0) = 4
+p'(0) = 1
+
+Paso 1. Hallar el equilibrio:
+
+5p = 15
+
+p* = 3
+
+Paso 2. Resolver la homogénea:
+
+p'' + 2p' + 5p = 0
+
+Paso 3. Polinomio característico:
+
+r^2 + 2r + 5 = 0
+
+Paso 4. Aplicar la fórmula general:
+
+r = (-2 ± sqrt(4 - 20))/2
+
+r = (-2 ± sqrt(-16))/2
+
+r = -1 ± 2i
+
+Paso 5. Escribir la homogénea real:
+
+p_h(t) = e^{-t}(c1 cos 2t + c2 sin 2t)
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+5A = 15
+
+A = 3
+
+Paso 7. Solución general:
+
+p(t) = 3 + e^{-t}(c1 cos 2t + c2 sin 2t)
+
+Paso 8. Usar p(0) = 4:
+
+4 = 3 + c1
+
+c1 = 1
+
+Paso 9. Derivar para usar p'(0) = 1:
+
+p'(t) = e^{-t}[(-c1 + 2c2)cos 2t + (-c2 - 2c1)sin 2t]
+
+En t = 0:
+
+1 = -c1 + 2c2
+
+Como c1 = 1:
+
+1 = -1 + 2c2
+
+c2 = 1
+
+Resultado:
+
+p(t) = 3 + e^{-t}(cos 2t + sin 2t)
+
+Interpretación:
+
+El precio rebota alrededor de 3, pero cada rebote es menor porque la amplitud se amortigua con e^{-t}.
+
+
+Ampliación del apartado de segundo orden
+
+Los siguientes materiales se añaden como bloque complementario para reforzar la resolución paso a paso, la interpretación económica y el apoyo visual del tema.
+
+Ejemplo complementario 1 de segundo orden
+
+Datos:
+
+p''(t) + 7p'(t) + 12p(t) = 48
+p(0) = 3
+p'(0) = 5
+
+Qué se busca:
+
+- encontrar la trayectoria del precio
+- hallar el equilibrio
+- interpretar qué le pasa al precio con el tiempo
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio, el precio ya no cambia ni acelera. Eso significa:
+
+p''(t) = 0
+p'(t) = 0
+
+Entonces la ecuación queda:
+
+12p = 48
+
+Ahora despejamos:
+
+p = 48/12 = 4
+
+Por tanto:
+
+p* = 4
+
+Explicación del paso 1:
+
+Ese valor 4 no depende del punto de arranque. Es el precio al que tiende el mercado cuando el ajuste ya terminó.
+
+Paso 2. Resolver la homogénea:
+
+Primero tomamos la ecuación sin el término constante:
+
+p'' + 7p' + 12p = 0
+
+Paso 3. Formar el polinomio característico:
+
+r^2 + 7r + 12 = 0
+
+Paso 4. Factorizar con cuidado:
+
+Buscamos dos números que multiplicados den 12 y sumados den 7.
+
+Esos números son 3 y 4, así que:
+
+r^2 + 7r + 12 = (r + 3)(r + 4)
+
+Entonces:
+
+(r + 3)(r + 4) = 0
+
+r1 = -3
+r2 = -4
+
+Explicación del paso 4:
+
+Como las raíces son reales, distintas y negativas, el ajuste será estable y no habrá oscilaciones.
+
+Paso 5. Escribir la solución homogénea:
+
+p_h(t) = c1e^{-3t} + c2e^{-4t}
+
+Paso 6. Buscar una solución particular:
+
+Como el lado derecho es una constante, probamos con una constante:
+
+p_p(t) = A
+
+Entonces:
+
+p'_p(t) = 0
+p''_p(t) = 0
+
+Sustituyendo:
+
+0 + 0 + 12A = 48
+
+12A = 48
+
+A = 4
+
+Por tanto:
+
+p_p(t) = 4
+
+Explicación del paso 6:
+
+La particular constante coincide con el equilibrio porque si el precio ya no cambia, solo queda el término con p.
+
+Paso 7. Formar la solución general:
+
+p(t) = p_h(t) + p_p(t)
+
+p(t) = c1e^{-3t} + c2e^{-4t} + 4
+
+Paso 8. Usar la condición inicial p(0) = 3:
+
+Sustituyendo t = 0:
+
+3 = c1e^0 + c2e^0 + 4
+
+Como e^0 = 1:
+
+3 = c1 + c2 + 4
+
+Pasamos el 4 al otro lado:
+
+c1 + c2 = -1
+
+Paso 9. Derivar para usar p'(0) = 5:
+
+Partimos de:
+
+p(t) = c1e^{-3t} + c2e^{-4t} + 4
+
+Derivamos término por término:
+
+p'(t) = -3c1e^{-3t} - 4c2e^{-4t}
+
+Ahora sustituimos t = 0:
+
+5 = -3c1 - 4c2
+
+Paso 10. Resolver el sistema:
+
+c1 + c2 = -1
+-3c1 - 4c2 = 5
+
+Despejamos de la primera:
+
+c1 = -1 - c2
+
+Sustituimos en la segunda:
+
+-3(-1 - c2) - 4c2 = 5
+
+Distribuimos:
+
+3 + 3c2 - 4c2 = 5
+
+3 - c2 = 5
+
+Pasamos el 3 al otro lado:
+
+-c2 = 2
+
+c2 = -2
+
+Ahora sustituimos en:
+
+c1 + c2 = -1
+
+c1 - 2 = -1
+
+c1 = 1
+
+Paso 11. Escribir la solución final:
+
+p(t) = e^{-3t} - 2e^{-4t} + 4
+
+Resultado:
+
+p(t) = 4 + e^{-3t} - 2e^{-4t}
+
+p* = 4
+
+Interpretación:
+
+El precio parte en 3, es decir, debajo del equilibrio. Como la velocidad inicial es positiva, el precio arranca subiendo. El sistema corrige rápido y se acerca a 4. No hay oscilaciones porque las raíces son reales y negativas. Puede existir una pequeña sobrecorrección, pero el ajuste termina siendo estable.
+
+Errores comunes:
+
+- factorizar mal r^2 + 7r + 12
+- olvidar que e^0 = 1
+- derivar mal e^{-3t} o e^{-4t}
+- confundir el equilibrio con el precio inicial
+
+Instrucción para Codex, visualización dinámica del ejemplo complementario 1:
+
+Crear un módulo interactivo llamado SecondOrderPriceExampleExtra1 con estas funciones:
+- graficar p(t) = 4 + e^{-3t} - 2e^{-4t}
+- dibujar la línea horizontal del equilibrio p = 4
+- mostrar un punto animado que recorra la trayectoria
+- incluir un deslizador de tiempo de 0 a 4
+- mostrar en tiempo real t, p(t) y la distancia al equilibrio p(t) - 4
+- incluir una mini gráfica de p'(t)
+- usar fondo #F2F2EE, curva principal #1C2A3A, equilibrio #C6A75E y punto móvil #6E1F28
+- añadir etiquetas didácticas: inicia debajo del equilibrio, sube con rapidez, se corrige, converge al equilibrio
+
+Ejemplo complementario 2 de segundo orden
+
+Datos:
+
+p''(t) + 6p'(t) + 25p(t) = 50
+p(0) = 1
+p'(0) = 4
+
+Qué se busca:
+
+- obtener la trayectoria del precio
+- hallar el equilibrio
+- interpretar el rebote alrededor del equilibrio
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio:
+
+p''(t) = 0
+p'(t) = 0
+
+Entonces:
+
+25p = 50
+
+p = 50/25 = 2
+
+Por tanto:
+
+p* = 2
+
+Paso 2. Resolver la homogénea:
+
+p'' + 6p' + 25p = 0
+
+Paso 3. Formar el polinomio característico:
+
+r^2 + 6r + 25 = 0
+
+Paso 4. Aplicar la fórmula general:
+
+r = (-6 ± sqrt(36 - 100))/2
+
+r = (-6 ± sqrt(-64))/2
+
+r = (-6 ± 8i)/2
+
+r = -3 ± 4i
+
+Explicación del paso 4:
+
+Como aparecen raíces complejas, el precio va a oscilar. Como la parte real es -3, esas oscilaciones se van a ir apagando con el tiempo.
+
+Paso 5. Escribir la solución homogénea real:
+
+p_h(t) = e^{-3t}(c1 cos 4t + c2 sin 4t)
+
+Paso 6. Buscar una solución particular:
+
+Probamos con una constante:
+
+p_p(t) = A
+
+Entonces:
+
+25A = 50
+
+A = 2
+
+Paso 7. Solución general:
+
+p(t) = e^{-3t}(c1 cos 4t + c2 sin 4t) + 2
+
+Paso 8. Usar p(0) = 1:
+
+Sustituimos t = 0:
+
+1 = e^0(c1 cos 0 + c2 sin 0) + 2
+
+Como e^0 = 1, cos 0 = 1 y sin 0 = 0:
+
+1 = c1 + 2
+
+c1 = -1
+
+Paso 9. Derivar para usar p'(0) = 4:
+
+Para no perder el orden, derivamos en partes.
+
+Sea:
+
+u(t) = c1 cos 4t + c2 sin 4t
+
+Entonces:
+
+p(t) = e^{-3t}u(t) + 2
+
+Derivando con regla del producto:
+
+p'(t) = e^{-3t}u'(t) - 3e^{-3t}u(t)
+
+Sacamos factor común:
+
+p'(t) = e^{-3t}[u'(t) - 3u(t)]
+
+Ahora derivamos u(t):
+
+u'(t) = -4c1 sin 4t + 4c2 cos 4t
+
+Sustituyendo:
+
+p'(t) = e^{-3t}[(-4c1 sin 4t + 4c2 cos 4t) - 3(c1 cos 4t + c2 sin 4t)]
+
+Distribuimos el -3:
+
+p'(t) = e^{-3t}[-4c1 sin 4t + 4c2 cos 4t - 3c1 cos 4t - 3c2 sin 4t]
+
+Agrupamos cosenos y senos:
+
+p'(t) = e^{-3t}[(-3c1 + 4c2) cos 4t + (-4c1 - 3c2) sin 4t]
+
+Ahora sustituimos t = 0:
+
+4 = -3c1 + 4c2
+
+Como c1 = -1:
+
+4 = -3(-1) + 4c2
+
+4 = 3 + 4c2
+
+1 = 4c2
+
+c2 = 1/4
+
+Paso 10. Escribir la solución final:
+
+p(t) = 2 + e^{-3t}(- cos 4t + (1/4) sin 4t)
+
+Resultado:
+
+p(t) = 2 + e^{-3t}(- cos 4t + (1/4) sin 4t)
+
+p* = 2
+
+Interpretación:
+
+El precio empieza en 1, por debajo del equilibrio, y además arranca con velocidad positiva. Como el sistema tiene raíces complejas, el precio rebota alrededor de 2. Sin embargo, esos rebotes son cada vez menores porque están multiplicados por e^{-3t}. En economía esto representa un ajuste con oscilaciones amortiguadas.
+
+Errores comunes:
+
+- pensar que una raíz compleja hace imposible la solución
+- olvidar la forma real e^{-3t}(c1 cos 4t + c2 sin 4t)
+- derivar mal el producto entre e^{-3t} y la parte trigonométrica
+- creer que oscilar implica inestabilidad
+
+Instrucción para Codex, visualización dinámica del ejemplo complementario 2:
+
+Crear un módulo interactivo llamado SecondOrderPriceExampleExtra2 con estas funciones:
+- graficar p(t) = 2 + e^{-3t}(- cos 4t + (1/4) sin 4t)
+- dibujar la línea horizontal del equilibrio p = 2
+- mostrar un punto animado sobre la curva
+- incluir un deslizador de tiempo de 0 a 6
+- incorporar una mini gráfica de fase con p(t) y p'(t)
+- mostrar dos curvas envolventes para visualizar cómo baja la amplitud
+- usar fondo #F2F2EE, curva principal #1C2A3A, equilibrio #C6A75E y punto móvil #6E1F28
+- añadir etiquetas didácticas: rebote, cruce del equilibrio, amplitud menor, convergencia
+
+Ejercicio complementario 1 de segundo orden
+
+Datos:
+
+p''(t) + 8p'(t) + 16p(t) = 32
+p(0) = 5
+p'(0) = -1
+
+Qué se busca:
+
+- encontrar la trayectoria del precio
+- hallar el equilibrio
+- interpretar por qué no hay oscilaciones
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio:
+
+16p = 32
+
+p* = 2
+
+Paso 2. Resolver la homogénea:
+
+p'' + 8p' + 16p = 0
+
+Paso 3. Formar el polinomio característico:
+
+r^2 + 8r + 16 = 0
+
+Paso 4. Factorizar:
+
+(r + 4)^2 = 0
+
+Raíz doble:
+
+r = -4
+
+Explicación del paso 4:
+
+La raíz repetida negativa sigue dando estabilidad. Solo cambia la forma algebraica de la solución homogénea.
+
+Paso 5. Escribir la solución homogénea:
+
+p_h(t) = (c1 + c2t)e^{-4t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+16A = 32
+
+A = 2
+
+Paso 7. Formar la solución general:
+
+p(t) = (c1 + c2t)e^{-4t} + 2
+
+Paso 8. Usar p(0) = 5:
+
+5 = (c1 + 0)e^0 + 2
+
+5 = c1 + 2
+
+c1 = 3
+
+Paso 9. Derivar para usar p'(0) = -1:
+
+Derivamos con regla del producto:
+
+p'(t) = c2e^{-4t} + (c1 + c2t)(-4e^{-4t})
+
+Sacamos factor común:
+
+p'(t) = [c2 - 4(c1 + c2t)]e^{-4t}
+
+Distribuimos:
+
+p'(t) = (c2 - 4c1 - 4c2t)e^{-4t}
+
+Ahora usamos t = 0:
+
+-1 = c2 - 4c1
+
+Como c1 = 3:
+
+-1 = c2 - 12
+
+c2 = 11
+
+Paso 10. Escribir la solución final:
+
+p(t) = (3 + 11t)e^{-4t} + 2
+
+Resultado:
+
+p(t) = (3 + 11t)e^{-4t} + 2
+
+p* = 2
+
+Interpretación:
+
+El precio empieza en 5, por arriba del equilibrio, y desde el inicio baja. No hay oscilaciones. El ajuste es estable y suave. La raíz doble negativa no destruye la convergencia; solo cambia la forma con la que el precio se acerca al equilibrio.
+
+Errores comunes:
+
+- escribir mal la solución de raíz repetida
+- olvidar distribuir el -4 al derivar
+- confundir la raíz doble con inestabilidad
+- no usar primero c1 antes de hallar c2
+
+Instrucción para Codex, visualización dinámica del ejercicio complementario 1:
+
+Crear un módulo interactivo llamado SecondOrderPriceExerciseExtra1 con estas funciones:
+- graficar p(t) = (3 + 11t)e^{-4t} + 2
+- dibujar la línea del equilibrio p = 2
+- mostrar el valor de p(t) - 2 en tiempo real
+- incluir una mini gráfica de p'(t)
+- añadir un deslizador de tiempo de 0 a 4
+- resaltar el punto inicial y la zona de convergencia
+- usar fondo #F2F2EE, curva principal #1C2A3A, equilibrio #C6A75E y punto móvil #6E1F28
+- añadir etiquetas didácticas: inicia arriba del equilibrio, baja sin rebotar, converge al equilibrio
+
+Ejercicio complementario 2 de segundo orden
+
+Datos:
+
+p''(t) + 5p'(t) + 6p(t) = 18
+p(0) = 6
+p'(0) = -2
+
+Qué se busca:
+
+- obtener la trayectoria del precio
+- hallar el equilibrio
+- interpretar el ajuste desde arriba del equilibrio
+
+Paso 1. Hallar el equilibrio:
+
+En equilibrio:
+
+6p = 18
+
+p* = 3
+
+Paso 2. Resolver la homogénea:
+
+p'' + 5p' + 6p = 0
+
+Paso 3. Formar el polinomio característico:
+
+r^2 + 5r + 6 = 0
+
+Paso 4. Factorizar:
+
+(r + 2)(r + 3) = 0
+
+r1 = -2
+r2 = -3
+
+Paso 5. Escribir la homogénea:
+
+p_h(t) = c1e^{-2t} + c2e^{-3t}
+
+Paso 6. Buscar la particular:
+
+p_p(t) = A
+
+6A = 18
+
+A = 3
+
+Paso 7. Solución general:
+
+p(t) = c1e^{-2t} + c2e^{-3t} + 3
+
+Paso 8. Usar p(0) = 6:
+
+6 = c1 + c2 + 3
+
+c1 + c2 = 3
+
+Paso 9. Derivar para usar p'(0) = -2:
+
+p'(t) = -2c1e^{-2t} - 3c2e^{-3t}
+
+En t = 0:
+
+-2 = -2c1 - 3c2
+
+Paso 10. Resolver el sistema:
+
+c1 + c2 = 3
+-2c1 - 3c2 = -2
+
+Despejamos de la primera:
+
+c1 = 3 - c2
+
+Sustituimos en la segunda:
+
+-2(3 - c2) - 3c2 = -2
+
+Distribuimos:
+
+-6 + 2c2 - 3c2 = -2
+
+-6 - c2 = -2
+
+Pasamos -6 al otro lado:
+
+-c2 = 4
+
+c2 = -4
+
+Ahora sustituimos en:
+
+c1 + c2 = 3
+
+c1 - 4 = 3
+
+c1 = 7
+
+Paso 11. Escribir la solución final:
+
+p(t) = 7e^{-2t} - 4e^{-3t} + 3
+
+Resultado:
+
+p(t) = 3 + 7e^{-2t} - 4e^{-3t}
+
+p* = 3
+
+Interpretación:
+
+El precio inicia en 6, por arriba del equilibrio. Desde el inicio desciende porque la velocidad inicial ya es negativa. No hay rebotes, porque las raíces son reales y negativas. El mercado corrige el exceso inicial y se acerca poco a poco a 3.
+
+Errores comunes:
+
+- despejar mal c1 = 3 - c2
+- olvidar derivar bien los exponentes
+- creer que bajar desde arriba implica inestabilidad
+- perder el orden al resolver el sistema de constantes
+
+Instrucción para Codex, visualización dinámica del ejercicio complementario 2:
+
+Crear un módulo interactivo llamado SecondOrderPriceExerciseExtra2 con estas funciones:
+- graficar p(t) = 3 + 7e^{-2t} - 4e^{-3t}
+- dibujar la línea horizontal del equilibrio p = 3
+- mostrar el valor absoluto de la distancia al equilibrio |p(t) - 3|
+- incluir una mini gráfica de p'(t)
+- añadir un deslizador de tiempo de 0 a 5
+- sombrear la zona arriba del equilibrio y abajo del equilibrio
+- usar fondo #F2F2EE, curva principal #1C2A3A, equilibrio #C6A75E y punto móvil #6E1F28
+- añadir etiquetas didácticas: inicia arriba del equilibrio, desciende, converge de forma estable
+
+3. Comparación directa
+
+Modelo de Evans:
+
+p'(t) = k(D - S)
+
+Pregunta central:
+
+¿Qué dice el desequilibrio actual del mercado?
+
+Modelo de segundo orden:
+
+p''(t) + ap'(t) + bp(t) = c
+
+Pregunta central:
+
+¿Cómo cambia la velocidad del precio con el tiempo?
+
+Idea corta:
+
+- Evans: ajuste directo.
+- Segundo orden: ajuste con memoria, freno u oscilación.
+
+Si el mercado se corrige de inmediato, Evans basta.
+Si la gráfica muestra rebotes o retardo, conviene segundo orden.

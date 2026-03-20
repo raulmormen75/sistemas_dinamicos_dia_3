@@ -13,7 +13,7 @@ export const introSection = {
   badge: 'Inicio',
   title: 'Lección de Evans y precio de segundo orden',
   usageIntro: md`
-Esta lección está organizada para leerla de principio a fin o para saltar a cualquier bloque con la navegación lateral. Primero repasa las bases, luego resuelve el modelo de Evans y al final trabaja el modelo de segundo orden con una comparación directa.
+Esta lección está organizada para leerla de principio a fin o para saltar a cualquier bloque con la navegación lateral. Primero repasa las bases, luego resuelve el modelo de Evans y al final trabaja el modelo de segundo orden con más casos resueltos para reforzar lectura, estabilidad y oscilación.
 `,
   guideItems: [
     {
@@ -29,11 +29,11 @@ Esta lección está organizada para leerla de principio a fin o para saltar a cu
     {
       kind: 'segundo',
       title: 'Segundo orden',
-      description: 'Explica la inercia del precio, el equilibrio y las oscilaciones amortiguadas.',
+      description: 'Explica la inercia del precio, el equilibrio y se refuerza con casos complementarios de convergencia y oscilación.',
     },
   ],
   usageNote: md`
-Abre solo el desarrollo, el ejemplo o la visualización que necesites. La idea es mantener una lectura limpia y avanzar por secciones cortas.
+Abre solo el desarrollo, el ejemplo o la visualización que necesites. La idea es mantener una lectura limpia, usar los casos complementarios cuando haga falta y avanzar por secciones cortas.
 `,
 };
 
@@ -616,7 +616,7 @@ export const exerciseGroups = [
     badge: 'Práctica',
     title: 'Práctica guiada',
     intro: md`
-En esta parte están los seis casos trabajados en la clase. Los tres primeros pertenecen al modelo de Evans y los tres últimos al modelo de segundo orden.
+En esta parte están los diez casos trabajados para la alumna. Los tres primeros pertenecen al modelo de Evans. Los siete restantes profundizan el modelo de segundo orden con ejemplos y ejercicios complementarios para distinguir convergencia directa, raíz doble y oscilación amortiguada.
 `,
     exercises: [
       {
@@ -1150,6 +1150,423 @@ La parte real negativa hace que la oscilación se apague con el tiempo.
             p0: 4,
             v0: 1,
             tMax: 8,
+            label: 'p',
+            variableName: 'Precio',
+          },
+        },
+      },
+      {
+        id: 'segundo-orden-ejemplo-complementario-1',
+        number: 7,
+        type: 'Segundo orden',
+        title: 'Ejemplo complementario 1 de segundo orden',
+        statement: md`
+Resolver:
+
+$$
+p''(t)+7p'(t)+12p(t)=48,\qquad p(0)=3,\qquad p'(0)=5
+$$
+`,
+        ask: md`
+- encontrar la trayectoria del precio
+- hallar el equilibrio
+- interpretar por qué el ajuste es estable aun cuando el precio arranca por debajo del equilibrio
+`,
+        steps: [
+          md`Equilibrio del sistema: cuando $$p''(t)=0$$ y $$p'(t)=0$$, queda
+$$
+12p=48 \Rightarrow p^*=4
+$$`,
+          md`Parte homogénea:
+$$
+p''+7p'+12p=0
+$$
+con polinomio característico
+$$
+r^2+7r+12=0
+$$`,
+          md`Factorización cuidadosa:
+$$
+r^2+7r+12=(r+3)(r+4)=0
+$$
+por lo tanto $$r_1=-3$$ y $$r_2=-4$$.`,
+          md`Como las raíces son reales, distintas y negativas, la respuesta será estable y no habrá oscilaciones sostenidas.`,
+          md`Solución homogénea:
+$$
+p_h(t)=c_1e^{-3t}+c_2e^{-4t}
+$$`,
+          md`Particular constante:
+$$
+p_p(t)=A,\qquad 12A=48 \Rightarrow A=4
+$$`,
+          md`Solución general:
+$$
+p(t)=c_1e^{-3t}+c_2e^{-4t}+4
+$$`,
+          md`Con $$p(0)=3$$:
+$$
+c_1+c_2+4=3 \Rightarrow c_1+c_2=-1
+$$`,
+          md`Derivamos para usar $$p'(0)=5$$:
+$$
+p'(t)=-3c_1e^{-3t}-4c_2e^{-4t}
+$$
+y en $$t=0$$:
+$$
+-3c_1-4c_2=5
+$$`,
+          md`Resolvemos el sistema
+$$
+\begin{cases}
+c_1+c_2=-1\\
+-3c_1-4c_2=5
+\end{cases}
+$$
+y obtenemos $$c_1=1$$ y $$c_2=-2$$.`,
+          md`Resultado:
+$$
+p(t)=4+e^{-3t}-2e^{-4t}
+$$`,
+        ],
+        result: md`
+$$
+p(t)=4+e^{-3t}-2e^{-4t}
+$$
+`,
+        interpretation: md`
+El precio parte en 3, por debajo del equilibrio, y además arranca con velocidad positiva. El sistema corrige rápido y se acerca a 4 sin oscilaciones persistentes porque las raíces son reales y negativas. Puede aparecer una sobrecorrección pequeña, pero el ajuste sigue siendo estable.
+`,
+        errors: [
+          'Factorizar mal $r^2+7r+12$.',
+          'Olvidar que $e^0=1$ al usar la condición inicial.',
+          'Derivar mal $e^{-3t}$ o $e^{-4t}$.',
+          'Confundir el equilibrio con el precio inicial.',
+        ],
+        visualHint:
+          'La visualización debe mostrar el equilibrio en p=4, un punto animado sobre la trayectoria y el ajuste estable con posible sobrecorrección ligera antes de converger.',
+        visual: {
+          type: 'secondOrderPrice',
+          title: 'Convergencia estable desde abajo del equilibrio',
+          summary: md`
+El precio inicia en $3$, acelera al principio y termina convergiendo a $4$ sin oscilaciones persistentes.
+`,
+          props: {
+            a: 7,
+            b: 12,
+            c: 48,
+            p0: 3,
+            v0: 5,
+            tMax: 6,
+            label: 'p',
+            variableName: 'Precio',
+          },
+        },
+      },
+      {
+        id: 'segundo-orden-ejemplo-complementario-2',
+        number: 8,
+        type: 'Segundo orden',
+        title: 'Ejemplo complementario 2 de segundo orden',
+        statement: md`
+Resolver:
+
+$$
+p''(t)+6p'(t)+25p(t)=50,\qquad p(0)=1,\qquad p'(0)=4
+$$
+`,
+        ask: md`
+- obtener la trayectoria del precio
+- hallar el equilibrio
+- interpretar el rebote alrededor del equilibrio
+`,
+        steps: [
+          md`Equilibrio:
+$$
+25p=50 \Rightarrow p^*=2
+$$`,
+          md`Parte homogénea:
+$$
+p''+6p'+25p=0
+$$
+con polinomio característico
+$$
+r^2+6r+25=0
+$$`,
+          md`Aplicamos la fórmula general:
+$$
+r=\frac{-6\pm\sqrt{36-100}}{2}=\frac{-6\pm 8i}{2}=-3\pm 4i
+$$`,
+          md`Como aparecen raíces complejas con parte real negativa, la trayectoria rebota alrededor del equilibrio pero la amplitud se reduce con el tiempo.`,
+          md`Solución homogénea real:
+$$
+p_h(t)=e^{-3t}(c_1\cos 4t+c_2\sin 4t)
+$$`,
+          md`Particular constante:
+$$
+p_p(t)=A,\qquad 25A=50 \Rightarrow A=2
+$$`,
+          md`Solución general:
+$$
+p(t)=e^{-3t}(c_1\cos 4t+c_2\sin 4t)+2
+$$`,
+          md`Con $$p(0)=1$$:
+$$
+1=c_1+2 \Rightarrow c_1=-1
+$$`,
+          md`Derivamos por producto:
+$$
+p'(t)=e^{-3t}\big[(-3c_1+4c_2)\cos 4t+(-4c_1-3c_2)\sin 4t\big]
+$$
+y en $$t=0$$:
+$$
+4=-3c_1+4c_2
+$$`,
+          md`Sustituyendo $$c_1=-1$$:
+$$
+4=3+4c_2 \Rightarrow c_2=\frac{1}{4}
+$$`,
+          md`Resultado:
+$$
+p(t)=2+e^{-3t}\left(-\cos 4t+\frac{1}{4}\sin 4t\right)
+$$`,
+        ],
+        result: md`
+$$
+p(t)=2+e^{-3t}\left(-\cos 4t+\frac{1}{4}\sin 4t\right)
+$$
+`,
+        interpretation: md`
+El precio empieza en 1, por debajo del equilibrio, y arranca con velocidad positiva. Como el sistema tiene raíces complejas, el precio rebota alrededor de 2. Sin embargo, esos rebotes son cada vez menores porque están multiplicados por $$e^{-3t}$$.
+`,
+        errors: [
+          'Pensar que una raíz compleja impide resolver la ecuación.',
+          'Olvidar la forma real $e^{-3t}(c_1\\cos 4t+c_2\\sin 4t)$.',
+          'Derivar mal el producto entre $e^{-3t}$ y la parte trigonométrica.',
+          'Creer que oscilar implica inestabilidad.',
+        ],
+        visualHint:
+          'La visualización debe mostrar cruces del equilibrio, dos envolventes decrecientes y una mini lectura de fase para identificar rebote y amplitud menor.',
+        visual: {
+          type: 'secondOrderPrice',
+          title: 'Rebote amortiguado alrededor del equilibrio',
+          summary: md`
+Las raíces complejas generan oscilación amortiguada y el factor $e^{-3t}$ reduce cada rebote alrededor de $2$.
+`,
+          props: {
+            a: 6,
+            b: 25,
+            c: 50,
+            p0: 1,
+            v0: 4,
+            tMax: 6,
+            label: 'p',
+            variableName: 'Precio',
+          },
+        },
+      },
+      {
+        id: 'segundo-orden-ejercicio-complementario-1',
+        number: 9,
+        type: 'Segundo orden',
+        title: 'Ejercicio complementario 1 de segundo orden',
+        statement: md`
+Resolver:
+
+$$
+p''(t)+8p'(t)+16p(t)=32,\qquad p(0)=5,\qquad p'(0)=-1
+$$
+`,
+        ask: md`
+- encontrar la trayectoria del precio
+- hallar el equilibrio
+- interpretar por qué no hay oscilaciones
+`,
+        steps: [
+          md`Equilibrio:
+$$
+16p=32 \Rightarrow p^*=2
+$$`,
+          md`Parte homogénea:
+$$
+p''+8p'+16p=0
+$$
+con polinomio característico
+$$
+r^2+8r+16=0
+$$`,
+          md`Factorización:
+$$
+(r+4)^2=0
+$$
+hay raíz doble negativa $$r=-4$$, así que la respuesta sigue siendo estable.`,
+          md`Solución homogénea:
+$$
+p_h(t)=(c_1+c_2t)e^{-4t}
+$$`,
+          md`Particular constante:
+$$
+p_p(t)=A,\qquad 16A=32 \Rightarrow A=2
+$$`,
+          md`Solución general:
+$$
+p(t)=(c_1+c_2t)e^{-4t}+2
+$$`,
+          md`Con $$p(0)=5$$:
+$$
+5=c_1+2 \Rightarrow c_1=3
+$$`,
+          md`Derivamos con regla del producto:
+$$
+p'(t)=\big(c_2-4c_1-4c_2t\big)e^{-4t}
+$$
+y en $$t=0$$:
+$$
+-1=c_2-4c_1
+$$`,
+          md`Sustituyendo $$c_1=3$$:
+$$
+-1=c_2-12 \Rightarrow c_2=11
+$$`,
+          md`Resultado:
+$$
+p(t)=(3+11t)e^{-4t}+2
+$$`,
+        ],
+        result: md`
+$$
+p(t)=(3+11t)e^{-4t}+2
+$$
+`,
+        interpretation: md`
+El precio empieza en 5, por arriba del equilibrio, y desde el inicio baja. No hay oscilaciones. La raíz doble negativa no destruye la convergencia; solo modifica la forma con la que el precio se acerca al equilibrio.
+`,
+        errors: [
+          'Escribir mal la solución de raíz repetida.',
+          'Olvidar distribuir el -4 al derivar.',
+          'Confundir la raíz doble con inestabilidad.',
+          'No usar primero $c_1$ antes de hallar $c_2$.',
+        ],
+        visualHint:
+          'La visualización debe mostrar la línea del equilibrio en p=2, el valor de p(t)-2 en tiempo real y una lectura clara de la zona de convergencia.',
+        visual: {
+          type: 'secondOrderPrice',
+          title: 'Raíz doble con convergencia suave',
+          summary: md`
+El precio inicia arriba del equilibrio y baja de manera estable hacia $2$ sin rebotar.
+`,
+          props: {
+            a: 8,
+            b: 16,
+            c: 32,
+            p0: 5,
+            v0: -1,
+            tMax: 4,
+            label: 'p',
+            variableName: 'Precio',
+          },
+        },
+      },
+      {
+        id: 'segundo-orden-ejercicio-complementario-2',
+        number: 10,
+        type: 'Segundo orden',
+        title: 'Ejercicio complementario 2 de segundo orden',
+        statement: md`
+Resolver:
+
+$$
+p''(t)+5p'(t)+6p(t)=18,\qquad p(0)=6,\qquad p'(0)=-2
+$$
+`,
+        ask: md`
+- obtener la trayectoria del precio
+- hallar el equilibrio
+- interpretar el ajuste desde arriba del equilibrio
+`,
+        steps: [
+          md`Equilibrio:
+$$
+6p=18 \Rightarrow p^*=3
+$$`,
+          md`Parte homogénea:
+$$
+p''+5p'+6p=0
+$$
+con polinomio característico
+$$
+r^2+5r+6=0
+$$`,
+          md`Factorización:
+$$
+(r+2)(r+3)=0
+$$
+por lo tanto $$r_1=-2$$ y $$r_2=-3$$.`,
+          md`Solución homogénea:
+$$
+p_h(t)=c_1e^{-2t}+c_2e^{-3t}
+$$`,
+          md`Particular constante:
+$$
+p_p(t)=A,\qquad 6A=18 \Rightarrow A=3
+$$`,
+          md`Solución general:
+$$
+p(t)=c_1e^{-2t}+c_2e^{-3t}+3
+$$`,
+          md`Con $$p(0)=6$$:
+$$
+c_1+c_2+3=6 \Rightarrow c_1+c_2=3
+$$`,
+          md`Derivamos para usar $$p'(0)=-2$$:
+$$
+p'(t)=-2c_1e^{-2t}-3c_2e^{-3t}
+$$
+y en $$t=0$$:
+$$
+-2=-2c_1-3c_2
+$$`,
+          md`Del sistema
+$$
+\begin{cases}
+c_1+c_2=3\\
+-2c_1-3c_2=-2
+\end{cases}
+$$
+se obtiene $$c_2=-4$$ y $$c_1=7$$.`,
+          md`Resultado:
+$$
+p(t)=3+7e^{-2t}-4e^{-3t}
+$$`,
+        ],
+        result: md`
+$$
+p(t)=3+7e^{-2t}-4e^{-3t}
+$$
+`,
+        interpretation: md`
+El precio inicia en 6, por arriba del equilibrio. Desde el inicio desciende porque la velocidad inicial ya es negativa. No hay rebotes, porque las raíces son reales y negativas. El mercado corrige el exceso inicial y se acerca poco a poco a 3.
+`,
+        errors: [
+          'Despejar mal $c_1=3-c_2$.',
+          'Olvidar derivar bien los exponentes.',
+          'Creer que bajar desde arriba implica inestabilidad.',
+          'Perder el orden al resolver el sistema de constantes.',
+        ],
+        visualHint:
+          'La visualización debe resaltar la distancia al equilibrio, el descenso inicial y la convergencia estable desde arriba de p=3.',
+        visual: {
+          type: 'secondOrderPrice',
+          title: 'Ajuste estable desde arriba del equilibrio',
+          summary: md`
+La trayectoria parte en $6$, baja desde el inicio y converge de forma estable hacia $3$.
+`,
+          props: {
+            a: 5,
+            b: 6,
+            c: 18,
+            p0: 6,
+            v0: -2,
+            tMax: 5,
             label: 'p',
             variableName: 'Precio',
           },
