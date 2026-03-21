@@ -1723,6 +1723,283 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
   );
 }
 
+function getAppliedSecondOrderInterpretation({ time, price, velocity, acceleration, distance, equilibrium }) {
+  if (time <= 0.08) {
+    return `El precio inicia en 4, por debajo del equilibrio ${formatNumber(equilibrium)}.`;
+  }
+
+  if (distance <= 0.04) {
+    return 'El precio ya está prácticamente en equilibrio.';
+  }
+
+  if (distance <= 0.16 || Math.abs(velocity) <= 0.08) {
+    return 'El sistema está muy cerca del equilibrio y la velocidad de ajuste ya es pequeña.';
+  }
+
+  if (price < equilibrium && velocity > 0 && acceleration > 0.06) {
+    return 'El precio sigue por debajo del equilibrio y la corrección hacia arriba todavía gana impulso.';
+  }
+
+  if (price < equilibrium && velocity > 0) {
+    return 'El precio se está corrigiendo hacia arriba.';
+  }
+
+  if (velocity > 0 && acceleration < 0) {
+    return 'El precio aún sube, pero la velocidad se va frenando conforme se acerca al equilibrio.';
+  }
+
+  if (price > equilibrium && velocity < 0) {
+    return 'El precio ya rebasó el equilibrio y ahora corrige hacia abajo.';
+  }
+
+  if (Math.abs(acceleration) <= 0.05) {
+    return 'El ritmo del ajuste ya casi no cambia y la trayectoria se estabiliza.';
+  }
+
+  return 'La trayectoria mantiene el ajuste hacia el equilibrio.';
+}
+
+function SecondOrderAppliedVisualizer({ title, summary, props, theme }) {
+  const palette = getPalette(theme);
+  const tMax = props?.tMax ?? 8;
+  const equilibrium = props?.equilibrium ?? 6;
+  const startValue = props?.startValue ?? 4;
+  const initialDistance = Math.abs(startValue - equilibrium) || 1;
+  const [timeValue, setTimeValue] = useState(0);
+  const [speed, setSpeed] = useState(1);
+  const [playing, setPlaying] = useState(false);
+  const times = useMemo(() => range(0, tMax, 260), [tMax]);
+  const prices = useMemo(() => times.map((time) => -4 * Math.exp(-time) + 2 * Math.exp(-2 * time) + 6), [times]);
+
+  useEffect(() => {
+    if (!playing) {
+      return undefined;
+    }
+
+    let frameId;
+    let lastTime = performance.now();
+
+    const step = (now) => {
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
+
+      setTimeValue((previous) => {
+        const next = previous + delta * speed;
+        if (next >= tMax) {
+          setPlaying(false);
+          return tMax;
+        }
+
+        return next;
+      });
+
+      frameId = requestAnimationFrame(step);
+    };
+
+    frameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frameId);
+  }, [playing, speed, tMax]);
+
+  const price = -4 * Math.exp(-timeValue) + 2 * Math.exp(-2 * timeValue) + 6;
+  const velocity = 4 * Math.exp(-timeValue) - 4 * Math.exp(-2 * timeValue);
+  const acceleration = -4 * Math.exp(-timeValue) + 8 * Math.exp(-2 * timeValue);
+  const distance = Math.abs(price - equilibrium);
+  const progress = clamp((1 - distance / initialDistance) * 100, 0, 100);
+  const interpretation = getAppliedSecondOrderInterpretation({
+    time: timeValue,
+    price,
+    velocity,
+    acceleration,
+    distance,
+    equilibrium,
+  });
+
+  const handlePlay = () => {
+    if (timeValue >= tMax) {
+      setTimeValue(0);
+    }
+    setPlaying(true);
+  };
+
+  return (
+    <VisualizationShell title={title} summary={summary}>
+      <div className="mini-note">
+        <strong>Qué estás observando.</strong> Esta tarjeta sigue el ejemplo resuelto
+        {' '}
+        <MathMarkdown content={'$p(t)=-4e^{-t}+2e^{-2t}+6$'} className="rich-text rich-text--compact" />
+        {' '}
+        y muestra cómo el precio pasa de 4 al equilibrio 6 mientras cambian su velocidad, su aceleración y la lectura económica.
+      </div>
+      <div className="controls-grid controls-grid--wide">
+        <div className="toggle-row">
+          <button type="button" className="toggle-button is-active" onClick={handlePlay}>
+            Reproducir
+          </button>
+          <button type="button" className="toggle-button" onClick={() => setPlaying(false)}>
+            Pausar
+          </button>
+          <button
+            type="button"
+            className="toggle-button"
+            onClick={() => {
+              setPlaying(false);
+              setTimeValue(0);
+            }}
+          >
+            Reiniciar
+          </button>
+        </div>
+        <Control
+          label="Tiempo"
+          value={timeValue.toFixed(2)}
+          min={0}
+          max={tMax}
+          step={0.01}
+          onChange={(value) => {
+            setPlaying(false);
+            setTimeValue(value);
+          }}
+          hint="Mueve el deslizador para revisar la trayectoria a cualquier instante."
+        />
+        <Control
+          label="Velocidad de animación"
+          value={`${speed.toFixed(1)}x`}
+          min={0.5}
+          max={3}
+          step={0.1}
+          onChange={setSpeed}
+          hint="Ajusta qué tan rápido avanza el punto móvil sobre la trayectoria."
+        />
+      </div>
+      <div className="chart-grid">
+        <div className="plot-card plot-card--wide">
+          <PlotFigure
+            data={[
+              {
+                type: 'scatter',
+                mode: 'lines',
+                x: times,
+                y: prices,
+                name: 'Trayectoria del precio',
+                line: { color: palette.navy, width: 3.4 },
+              },
+              {
+                type: 'scatter',
+                mode: 'lines',
+                x: [0, tMax],
+                y: [equilibrium, equilibrium],
+                name: 'Equilibrio',
+                line: { color: palette.wine, width: 2.1, dash: 'dash' },
+              },
+              {
+                type: 'scatter',
+                mode: 'markers',
+                x: [timeValue],
+                y: [price],
+                name: 'Punto móvil',
+                marker: { size: 13, color: palette.gold, line: { color: palette.surface, width: 2 } },
+              },
+            ]}
+            layout={{
+              margin: { l: 52, r: 24, t: 24, b: 132 },
+              xaxis: { title: 'Tiempo t', gridcolor: palette.grid, color: palette.graphite, range: [0, tMax] },
+              yaxis: {
+                title: 'Precio p(t)',
+                gridcolor: palette.grid,
+                color: palette.graphite,
+                range: [Math.min(...prices) - 0.35, equilibrium + 0.8],
+              },
+              legend: getBottomLegendLayout(),
+              annotations: [
+                {
+                  x: 0,
+                  y: startValue,
+                  text: 'Inicio',
+                  showarrow: true,
+                  arrowcolor: palette.wine,
+                  ay: -36,
+                  ax: 28,
+                  bgcolor: palette.surface,
+                  bordercolor: palette.border,
+                  font: { color: palette.graphite, size: 12 },
+                },
+                {
+                  x: tMax * 0.84,
+                  y: equilibrium,
+                  text: 'Equilibrio',
+                  showarrow: false,
+                  xanchor: 'left',
+                  yanchor: 'bottom',
+                  font: { color: palette.wine, size: 12 },
+                },
+              ],
+            }}
+            style={{ width: '100%', height: '430px' }}
+            theme={theme}
+          />
+        </div>
+        <div className="plot-card plot-card--info">
+          <div className="summary-grid summary-grid--stacked">
+            <article className="summary-card">
+              <p className="prompt-label">Modelo observado</p>
+              <MathMarkdown content={'$$p(t)=-4e^{-t}+2e^{-2t}+6$$'} className="rich-text" />
+            </article>
+            <div className="metric-grid">
+              {[
+                { label: 'Valor actual de $p(t)$', value: formatNumber(price, 3) },
+                { label: 'Valor actual de $p\'(t)$', value: formatNumber(velocity, 3) },
+                { label: 'Valor actual de $p\'\'(t)$', value: formatNumber(acceleration, 3) },
+                { label: 'Distancia al equilibrio $|p(t)-6|$', value: formatNumber(distance, 3) },
+              ].map((item) => (
+                <article key={item.label} className="metric-card">
+                  <MathMarkdown content={item.label} className="rich-text rich-text--compact metric-card__label" />
+                  <strong className="metric-card__value">{item.value}</strong>
+                </article>
+              ))}
+            </div>
+            <article className="summary-card">
+              <p className="prompt-label">Acercamiento al equilibrio</p>
+              <div className="equilibrium-meter">
+                <div className="equilibrium-meter__label">
+                  <span>Progreso visual</span>
+                  <strong>{formatNumber(progress, 1)}%</strong>
+                </div>
+                <div className="progress-bar">
+                  <div className="progress-bar__fill" style={{ width: `${progress}%` }} />
+                </div>
+                <p className="equilibrium-meter__note">
+                  La barra aumenta conforme la trayectoria reduce la brecha respecto a $p=6$.
+                </p>
+              </div>
+            </article>
+            <article className="summary-card interpretation-panel">
+              <p className="prompt-label">Interpretación económica en tiempo real</p>
+              <p>{interpretation}</p>
+            </article>
+          </div>
+        </div>
+      </div>
+      <div className="mini-note mini-note--soft">
+        <strong>Lectura actual.</strong> En
+        {' '}
+        <MathMarkdown content={`$t=${formatNumber(timeValue, 2)}$`} className="rich-text rich-text--compact" />
+        {' '}
+        el precio vale
+        {' '}
+        <MathMarkdown content={`$p(t)=${formatNumber(price, 2)}$`} className="rich-text rich-text--compact" />
+        , con velocidad
+        {' '}
+        <MathMarkdown content={`$p'(t)=${formatNumber(velocity, 2)}$`} className="rich-text rich-text--compact" />
+        {' '}
+        y aceleración
+        {' '}
+        <MathMarkdown content={`$p''(t)=${formatNumber(acceleration, 2)}$`} className="rich-text rich-text--compact" />
+        .
+      </div>
+    </VisualizationShell>
+  );
+}
+
 function ModelComparisonVisualizer({ title, summary, props, theme }) {
   const palette = getPalette(theme);
   const left = props?.left ?? {};
@@ -1927,6 +2204,8 @@ export default function VisualizationPanel({ visual, theme = 'light' }) {
       return <SummaryGridVisualizer title={title} summary={summary} props={props} theme={theme} />;
     case 'secondOrderPrice':
       return <SecondOrderPriceVisualizer title={title} summary={summary} props={props} theme={theme} />;
+    case 'secondOrderApplied':
+      return <SecondOrderAppliedVisualizer title={title} summary={summary} props={props} theme={theme} />;
     case 'modelComparison':
       return <ModelComparisonVisualizer title={title} summary={summary} props={props} theme={theme} />;
     default:

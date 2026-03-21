@@ -475,6 +475,435 @@ En este caso el equilibrio es $4$ y el precio arranca en $1$. La respuesta es es
     },
   },
   {
+    id: 'segundo-orden-aplicado',
+    navLabel: 'Aplicación 2° orden',
+    badge: 'Ampliación',
+    title: 'Comparación y ejemplo aplicado de ecuación diferencial de segundo orden con interpretación económica',
+    meaning: md`
+Esta ampliación retoma el modelo de segundo orden y lo baja a una lectura muy guiada, paso a paso, para que se vea con claridad qué representa cada término y cómo se traduce en una trayectoria concreta de precio.
+
+$$
+p''(t)+a\,p'(t)+b\,p(t)=f(t)
+$$
+`,
+    economyUse: md`
+Sirve para estudiar precios que no solo cambian con el tiempo, sino que además arrastran memoria del movimiento previo, fricción en el ajuste y presión externa. Así, la alumna puede conectar cálculo, equilibrio y lectura económica dentro del mismo ejemplo.
+`,
+    explanationParts: [
+      {
+        title: '🧩 Forma general y significado',
+        content: md`
+Partimos de la ecuación:
+
+$$
+p''(t)+a\,p'(t)+b\,p(t)=f(t)
+$$
+
+- **$p(t)$**
+  Matemáticamente: es la función desconocida y depende del tiempo.
+  Económicamente: representa el precio en el tiempo.
+
+- **$p'(t)$**
+  Matemáticamente: es la primera derivada y mide la tasa de cambio.
+  Económicamente: indica qué tan rápido sube o baja el precio.
+
+- **$p''(t)$**
+  Matemáticamente: es la segunda derivada y mide cómo cambia la primera derivada.
+  Económicamente: indica si la velocidad del ajuste se acelera o se frena. Aquí ya no solo importa si el precio sube o baja, sino cómo cambia esa velocidad con el paso del tiempo.
+
+- **$a\,p'(t)$**
+  Matemáticamente: es el término donde la velocidad del cambio está ponderada por una constante.
+  Económicamente: puede representar fricción, amortiguamiento o resistencia del ajuste.
+
+- **$b\,p(t)$**
+  Matemáticamente: es el término donde el nivel actual de la variable influye directamente en la dinámica.
+  Económicamente: muestra que el propio nivel del precio afecta su trayectoria.
+
+- **$f(t)$**
+  Matemáticamente: es una función externa conocida.
+  Económicamente: representa una fuerza externa, como un shock, una política, un impulso o una presión externa.
+
+🌿 En conjunto, la ecuación de segundo orden permite estudiar un precio que no solo cambia en el tiempo, sino que también puede traer inercia, ajuste gradual o efectos del movimiento previo.
+`,
+      },
+      {
+        title: '📘 El ejemplo concreto y qué representa cada término',
+        content: md`
+Ahora trabajamos con el ejemplo:
+
+$$
+p''(t)+3p'(t)+2p(t)=12
+$$
+
+con condiciones iniciales:
+
+$$
+p(0)=4,\qquad p'(0)=0
+$$
+
+Lectura puntual del ejemplo:
+
+1. $p''(t)$ indica cómo cambia la velocidad del ajuste del precio.
+2. $3p'(t)$ representa una fuerza de amortiguamiento del movimiento.
+3. $2p(t)$ incorpora el efecto del nivel actual del precio.
+4. $12$ es una fuerza externa constante.
+5. $p(0)=4$ significa que el precio inicial es 4.
+6. $p'(0)=0$ significa que la velocidad inicial del precio es cero.
+
+🧠 La idea es leer este modelo como un sistema que empieza por debajo del equilibrio y que, aunque no arranca con velocidad, sí activa una corrección interna que empuja al precio hacia su nivel de largo plazo.
+`,
+      },
+      {
+        title: '💬 Interpretación económica con los números obtenidos',
+        content: md`
+Después de resolver el modelo, la solución final es:
+
+$$
+p(t)=-4e^{-t}+2e^{-2t}+6
+$$
+
+Esto nos dice que el precio inicia en $4$ y que el equilibrio de largo plazo es $6$. Como $4<6$, el precio arranca por debajo del equilibrio. Además, la condición $p'(0)=0$ indica que al inicio no trae velocidad de cambio, pero aun así la propia dinámica del sistema corrige el desfase.
+
+Los términos transitorios
+
+$$
+-4e^{-t}\qquad \text{y} \qquad 2e^{-2t}
+$$
+
+se van haciendo pequeños cuando pasa el tiempo, por eso:
+
+$$
+p(t)\to 6
+$$
+
+En palabras sencillas: el modelo muestra que el precio empieza en 4, el equilibrio está en 6, y con el paso del tiempo el sistema corrige ese desfase hasta acercar el precio a 6.
+`,
+      },
+      {
+        title: '📈 Cómo se ve la gráfica',
+        content: md`
+En la gráfica:
+
+- en el eje horizontal va el tiempo $t$,
+- en el eje vertical va el precio $p(t)$,
+- la curva inicia en $4$,
+- luego sube de manera gradual,
+- se va aplanando,
+- y se aproxima a la línea horizontal $p=6$.
+
+🎯 La visualización interactiva de esta sección está pensada como apoyo pedagógico del ejemplo resuelto: permite seguir la trayectoria, revisar derivadas y leer la interpretación económica en tiempo real.
+`,
+      },
+    ],
+    example: {
+      number: 4,
+      title: 'Ejemplo completo resuelto desde cero',
+      statement: md`
+Resolver:
+
+$$
+p''(t)+3p'(t)+2p(t)=12
+$$
+
+con condiciones iniciales:
+
+$$
+p(0)=4,\qquad p'(0)=0
+$$
+`,
+      ask: 'Desarrollar la solución paso a paso, encontrar el equilibrio y explicar su interpretación económica.',
+      steps: [
+        md`**Paso 1. Hallar el equilibrio**
+
+En equilibrio ya no hay cambio ni velocidad de cambio. Por eso:
+
+$$
+p'(t)=0,\qquad p''(t)=0
+$$
+
+Sustituimos en la ecuación:
+
+$$
+0+0+2p=12
+$$
+
+Entonces:
+
+$$
+2p=12
+$$
+
+y al dividir entre 2:
+
+$$
+p=6
+$$
+
+Concluimos que el equilibrio de largo plazo es:
+
+$$
+p^*=6
+$$
+
+En palabras simples: el sistema tiende al precio 6.`,
+        md`**Paso 2. Resolver la ecuación homogénea**
+
+Ahora resolvemos la parte homogénea:
+
+$$
+p''+3p'+2p=0
+$$
+
+Proponemos una solución de la forma:
+
+$$
+p(t)=e^{rt}
+$$
+
+Entonces sus derivadas son:
+
+$$
+p'(t)=re^{rt}
+$$
+
+$$
+p''(t)=r^2e^{rt}
+$$
+
+Sustituimos en la ecuación homogénea:
+
+$$
+r^2e^{rt}+3re^{rt}+2e^{rt}=0
+$$
+
+Factorizamos:
+
+$$
+e^{rt}(r^2+3r+2)=0
+$$
+
+Como $e^{rt}\neq 0$, resolvemos:
+
+$$
+r^2+3r+2=0
+$$
+
+Factorizamos el trinomio:
+
+$$
+(r+1)(r+2)=0
+$$
+
+De aquí salen las raíces:
+
+$$
+r=-1,\qquad r=-2
+$$
+
+Por tanto, la solución homogénea es:
+
+$$
+p_h(t)=C_1e^{-t}+C_2e^{-2t}
+$$
+
+Las exponenciales aparecen porque en este tipo de ecuaciones la derivada conserva la misma forma funcional de la exponencial.`,
+        md`**Paso 3. Hallar una solución particular**
+
+Como el lado derecho es una constante, probamos con una solución particular constante:
+
+$$
+p_p(t)=A
+$$
+
+Entonces:
+
+$$
+p_p'(t)=0,\qquad p_p''(t)=0
+$$
+
+Sustituimos en la ecuación original:
+
+$$
+0+0+2A=12
+$$
+
+Luego:
+
+$$
+2A=12
+$$
+
+y al dividir entre 2:
+
+$$
+A=6
+$$
+
+Así, una solución particular es:
+
+$$
+p_p(t)=6
+$$`,
+        md`**Paso 4. Formar la solución general**
+
+La solución general se obtiene sumando la homogénea y la particular:
+
+$$
+p(t)=p_h(t)+p_p(t)
+$$
+
+Sustituyendo lo que ya encontramos:
+
+$$
+p(t)=C_1e^{-t}+C_2e^{-2t}+6
+$$`,
+        md`**Paso 5. Aplicar la condición inicial $p(0)=4$**
+
+Sustituimos $t=0$ en la solución general:
+
+$$
+4=C_1e^0+C_2e^0+6
+$$
+
+Como $e^0=1$, queda:
+
+$$
+4=C_1+C_2+6
+$$
+
+Restamos 6 en ambos lados:
+
+$$
+C_1+C_2=-2
+$$`,
+        md`**Paso 6. Derivar la solución general**
+
+Partimos de:
+
+$$
+p(t)=C_1e^{-t}+C_2e^{-2t}+6
+$$
+
+Derivamos término por término:
+
+$$
+p'(t)=-C_1e^{-t}-2C_2e^{-2t}
+$$`,
+        md`**Paso 7. Aplicar la condición inicial $p'(0)=0$**
+
+Sustituimos $t=0$ en la derivada:
+
+$$
+0=-C_1e^0-2C_2e^0
+$$
+
+Como $e^0=1$, resulta:
+
+$$
+0=-C_1-2C_2
+$$
+
+Multiplicamos por $-1$ para ordenar mejor:
+
+$$
+C_1+2C_2=0
+$$`,
+        md`**Paso 8. Resolver el sistema para $C_1$ y $C_2$**
+
+Ya tenemos el sistema:
+
+$$
+C_1+C_2=-2
+$$
+
+$$
+C_1+2C_2=0
+$$
+
+Restamos la primera ecuación de la segunda:
+
+$$
+(C_1+2C_2)-(C_1+C_2)=0-(-2)
+$$
+
+Simplificando:
+
+$$
+C_2=2
+$$
+
+Ahora sustituimos en:
+
+$$
+C_1+C_2=-2
+$$
+
+Entonces:
+
+$$
+C_1+2=-2
+$$
+
+y por último:
+
+$$
+C_1=-4
+$$`,
+        md`**Paso 9. Escribir la solución final**
+
+Sustituimos $C_1=-4$ y $C_2=2$ en la solución general:
+
+$$
+p(t)=-4e^{-t}+2e^{-2t}+6
+$$
+
+✅ Esta es la solución final del problema.`,
+      ],
+      result: md`
+### ✅ Solución final
+
+$$
+p(t)=-4e^{-t}+2e^{-2t}+6
+$$
+`,
+      interpretation: md`
+El precio inicia en $4$ y el equilibrio de largo plazo es $6$. Como $4<6$, el precio arranca por debajo del equilibrio. La condición $p'(0)=0$ indica que al principio no trae velocidad de cambio, pero la propia dinámica del sistema corrige ese desfase.
+
+Los términos $-4e^{-t}$ y $2e^{-2t}$ se hacen cada vez más pequeños conforme avanza el tiempo. Por eso:
+
+$$
+p(t)\to 6
+$$
+
+En palabras que se pueden explicar en clase: «El modelo muestra que el precio empieza en 4, el equilibrio está en 6, y con el paso del tiempo el sistema corrige ese desfase hasta acercar el precio a 6.»
+`,
+      errors: [
+        'Olvidar que el equilibrio se obtiene al hacer $p\'(t)=0$ y $p\'\'(t)=0$.',
+        'Saltar de la ecuación característica a la solución homogénea sin mostrar las raíces.',
+        'No derivar con cuidado el término $C_2e^{-2t}$.',
+        'Perder un signo al resolver el sistema para $C_1$ y $C_2$.',
+      ],
+      visualPrompt:
+        'La visualización debe mostrar la trayectoria del precio desde 4 hasta el equilibrio 6, junto con el punto móvil, la lectura de derivadas y una interpretación económica que cambie conforme avanza el tiempo.',
+    },
+    recap: md`
+La ecuación de segundo orden no solo dice hacia dónde va el precio. También explica con qué ritmo corrige el desfase y cómo se va apagando el efecto del movimiento inicial.
+`,
+    visual: {
+      type: 'secondOrderApplied',
+      title: 'Visualización dinámica del ejemplo resuelto',
+      summary: md`
+Observa cómo el precio parte de $4$, se corrige hacia arriba y se aproxima al equilibrio $p=6$. La gráfica, las derivadas y la lectura económica cambian al mismo tiempo para que el ejemplo se entienda como una sola historia.
+`,
+      props: {
+        tMax: 8,
+        equilibrium: 6,
+        startValue: 4,
+        initialSpeed: 0,
+      },
+    },
+  },
+  {
     id: 'comparacion',
     navLabel: 'Comparación',
     badge: 'Comparación',
@@ -510,7 +939,7 @@ Evans sirve cuando la reacción del mercado es inmediata. El modelo de segundo o
       },
     ],
     example: {
-      number: 4,
+      number: 5,
       title: 'Comparación guiada',
       statement: md`
 Compara estas dos ideas:

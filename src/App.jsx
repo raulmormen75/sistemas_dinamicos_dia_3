@@ -519,9 +519,20 @@ function ExerciseSection({ group, theme }) {
 }
 
 export default function App() {
+  const orderedSections = useMemo(() => {
+    const standaloneExample = sections.find((section) => section.id === 'segundo-orden-aplicado');
+    return [...sections.filter((section) => section.id !== 'segundo-orden-aplicado'), standaloneExample].filter(Boolean);
+  }, []);
+
   const navItems = useMemo(
-    () => [introSection, ...sections, ...exerciseGroups].map(({ id, navLabel, badge, title }) => ({ id, navLabel, badge, title })),
-    [],
+    () =>
+      [introSection, ...orderedSections, ...exerciseGroups].map(({ id, navLabel, badge, title }) => ({
+        id,
+        navLabel,
+        badge,
+        title,
+      })),
+    [orderedSections],
   );
   const [activeId, navigateToSection] = useActiveSection(navItems);
   const [theme, setTheme] = useState(getInitialTheme);
@@ -554,7 +565,7 @@ export default function App() {
       <Sidebar navItems={navItems} activeId={activeId} onNavigate={navigateToSection} />
       <main className="main-content">
         <IntroSection />
-        {sections.map((section) => (
+        {orderedSections.map((section) => (
           <LessonSection key={section.id} section={section} theme={theme} />
         ))}
         {exerciseGroups.map((group) => (
