@@ -59,7 +59,17 @@ function getBaseLayout(palette) {
       family: 'Manrope, sans-serif',
       color: palette.graphite,
     },
-    margin: { l: 48, r: 24, t: 24, b: 44 },
+    margin: { l: 48, r: 24, t: 24, b: 124 },
+  };
+}
+
+function getBottomLegendLayout() {
+  return {
+    orientation: 'h',
+    x: 0,
+    xanchor: 'left',
+    y: -0.24,
+    yanchor: 'top',
   };
 }
 
@@ -165,7 +175,7 @@ function PlotFigure({ data, layout, style, theme }) {
           ...layout,
         }}
         config={plotConfig}
-        style={style ?? { width: '100%', height: '320px' }}
+        style={style ?? { width: '100%', height: '380px' }}
         useResizeHandler
       />
     </Suspense>
@@ -403,7 +413,7 @@ function RationalHoleVisualizer({ title, summary, props, theme }) {
           layout={{
             xaxis: { title: 'x', gridcolor: palette.grid, color: palette.graphite },
             yaxis: { title: 'y', gridcolor: palette.grid, color: palette.graphite },
-            legend: { orientation: 'h', y: 1.12, x: 0 },
+            legend: getBottomLegendLayout(),
           }}
           theme={theme}
         />
@@ -472,7 +482,7 @@ function DerivativeVisualizer({ title, summary, props, theme }) {
             layout={{
               xaxis: { title: props.xLabel, gridcolor: palette.grid, color: palette.graphite },
               yaxis: { title: props.yLabel, gridcolor: palette.grid, color: palette.graphite },
-              legend: { orientation: 'h', y: 1.14, x: 0 },
+              legend: getBottomLegendLayout(),
             }}
             theme={theme}
           />
@@ -633,7 +643,7 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
       layout={{
         xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
         yaxis: { title: props.variableName, gridcolor: palette.grid, color: palette.graphite },
-        legend: { orientation: 'h', y: 1.14, x: 0 },
+        legend: getBottomLegendLayout(),
         annotations: [
           {
             x: props.tMax * 0.92,
@@ -681,7 +691,7 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
               layout={{
                 xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
                 yaxis: { title: props.variableName, gridcolor: palette.grid, color: palette.graphite },
-                legend: { orientation: 'h', y: 1.14, x: 0 },
+                legend: getBottomLegendLayout(),
               }}
               theme={theme}
             />
@@ -718,7 +728,7 @@ function LinearAutonomousVisualizer({ title, summary, props, theme }) {
             layout={{
               xaxis: { title: props.label, gridcolor: palette.grid, color: palette.graphite },
               yaxis: { title: 'Tasa de cambio', gridcolor: palette.grid, color: palette.graphite },
-              legend: { orientation: 'h', y: 1.14, x: 0 },
+              legend: getBottomLegendLayout(),
             }}
             theme={theme}
           />
@@ -868,7 +878,7 @@ function SeparableVisualizer({ title, summary, theme }) {
           layout={{
             xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
             yaxis: { title: 'y', gridcolor: palette.grid, color: palette.graphite },
-            legend: { orientation: 'h', y: 1.14, x: 0 },
+            legend: getBottomLegendLayout(),
           }}
           theme={theme}
         />
@@ -953,7 +963,7 @@ function GrowthFieldVisualizer({ title, summary, props, theme }) {
           layout={{
             xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
             yaxis: { title: 'y', gridcolor: palette.grid, color: palette.graphite, range: [0, props.yMax] },
-            legend: { orientation: 'h', y: 1.14, x: 0 },
+            legend: getBottomLegendLayout(),
           }}
           theme={theme}
         />
@@ -1046,7 +1056,7 @@ function BernoulliVisualizer({ title, summary, props, theme }) {
           layout={{
             xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
             yaxis: { title: 'y', gridcolor: palette.grid, color: palette.graphite },
-            legend: { orientation: 'h', y: 1.14, x: 0 },
+            legend: getBottomLegendLayout(),
           }}
           theme={theme}
         />
@@ -1194,7 +1204,7 @@ function LogisticVisualizer({ title, summary, props, theme }) {
             layout={{
               xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
               yaxis: { title: 'x(t)', gridcolor: palette.grid, color: palette.graphite },
-              legend: { orientation: 'h', y: 1.14, x: 0 },
+              legend: getBottomLegendLayout(),
             }}
             theme={theme}
           />
@@ -1615,7 +1625,7 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
               layout={{
                 xaxis: { title: 'Tiempo', gridcolor: palette.grid, color: palette.graphite },
                 yaxis: { title: props.variableName ?? 'Precio', gridcolor: palette.grid, color: palette.graphite },
-                legend: { orientation: 'h', y: 1.12, x: 0 },
+                legend: getBottomLegendLayout(),
                 annotations: [
                   {
                     x: props.tMax * 0.92,
@@ -1669,7 +1679,7 @@ function SecondOrderPriceVisualizer({ title, summary, props, theme }) {
               layout={{
                 xaxis: { title: props.variableName ?? 'Precio', gridcolor: palette.grid, color: palette.graphite },
                 yaxis: { title: 'Velocidad', gridcolor: palette.grid, color: palette.graphite },
-                legend: { orientation: 'h', y: 1.12, x: 0 },
+                legend: getBottomLegendLayout(),
               }}
               theme={theme}
             />
